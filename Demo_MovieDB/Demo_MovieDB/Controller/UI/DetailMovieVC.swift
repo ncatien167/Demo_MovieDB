@@ -27,12 +27,12 @@ class DetailMovieVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = ""
+        navigationItem.title = movie.title
         tabBarController?.hidesBottomBarWhenPushed = false
     }
     
     override func setupUserInterFace() {
-
+        showBackButton()
         getMovieWith(id: String(movie.id))
     }
     
@@ -47,12 +47,7 @@ class DetailMovieVC: BaseViewController {
     }
     
     @IBAction func btnMarkAsFavorite(_ sender: Any) {
-    
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
+        markAsFaviriteMovie(with: String(movie.id))
     }
 
 }
@@ -74,7 +69,24 @@ extension DetailMovieVC {
                 print(error)
             }
         }
+    }
+    
+    func markAsFaviriteMovie(with id: String) {
+        let requestBody = ["media_type": "movie",
+                           "media_id": String(movie.id),
+                           "favorite": "true"]
+        let url = "https://api.themoviedb.org/3/account/7702565/favorite?api_key=ee8cf966d22254270f6faa1948ecf3fc&session_id=481340b7b3fbf2523e93328ebdeb6548aa5b49dc"
         
+        let header = [Header.contentType : Header.Content.application]
+        
+        Alamofire.request(url, method: .post, parameters: requestBody, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            switch response.result {
+            case .success:
+                print(response)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
 }

@@ -12,6 +12,7 @@ enum APIManager {
  
     case movieList
     case searchMovie
+    case favoriteMovie
 }
 
 extension APIManager {
@@ -29,6 +30,8 @@ extension APIManager {
             path = "movie/popular"
         case .searchMovie:
             path = "search/movie"
+        case .favoriteMovie:
+            path = "account/favorite/movies"
         }
         return baseURL + path
     }
@@ -42,6 +45,8 @@ extension APIManager {
             return .get
         case .searchMovie:
             return .get
+        case .favoriteMovie:
+            return .post
         }
     }
         
@@ -54,6 +59,8 @@ extension APIManager {
             return URLEncoding.default
         case .searchMovie:
             return URLEncoding.default
+        case .favoriteMovie:
+            return JSONEncoding.default
         }
         
     }
@@ -67,6 +74,8 @@ extension APIManager {
             return [:]
         case .searchMovie:
             return [:]
+        case .favoriteMovie:
+            return [Header.contentType : " "]
         }
     }
 }

@@ -14,6 +14,38 @@ typealias ErrorResponseBlock = (_ error: String?) -> Void
 typealias ResponseBlock = (_ errorResponse: String?, _ json: JSON?) -> Void
 
 struct APIController {
+    let url = "https://api.themoviedb.org/3/account/7702565/favorite?api_key=ee8cf966d22254270f6faa1948ecf3fc&session_id=481340b7b3fbf2523e93328ebdeb6548aa5b49dc"
+    
+    static func request(path: String, params: Parameters? = nil, manager: APIManager, result: @escaping ResponseBlock) {
+        let url = APIKeyword.baseURL + path
+        Logger.log(message: "URL: \(url)", event: .info)
+        
+        Alamofire.request(url, method: manager.method, parameters: params, encoding: manager.encoding, headers: manager.header).responseJSON { (responseObject) -> Void in
+            switch responseObject.result {
+            case .success(let data):
+                
+                let response = JSON(data)
+                result(nil, response)
+                Logger.log(message: response.prettyPrinted(), event: .info)
+                
+            case .failure(let error):
+                
+                if let data = responseObject.data {
+                    
+                    guard let json = String(data: data, encoding: .utf8) else { return }
+                    let response = JSON(parseJSON: json)
+                    
+                    guard let message = response[APIKeyword.error].string else {
+                        result(error.localizedDescription, nil)
+                        return
+                    }
+                    result(message, nil)
+                    Logger.log(message: response.prettyPrinted(), event: .info)
+                    
+                }
+            }
+        }
+    }
     
     static func request(manager: APIManager, params: Parameters? = nil, result: @escaping ResponseBlock) {
         
@@ -24,8 +56,6 @@ struct APIController {
             switch responseObject.result {
             case .success(let data):
                 
-                //Handle success data
-                
                 let response = JSON(data)
                 result(nil, response)
                 Logger.log(message: response.prettyPrinted(), event: .info)
@@ -33,12 +63,10 @@ struct APIController {
             case .failure(let error):
                 
                 if let data = responseObject.data {
-                    
-                    //Parse data to JSON
+                
                     guard let json = String(data: data, encoding: .utf8) else { return }
                     let response = JSON(parseJSON: json)
                     
-                    //Handle error
                     guard let message = response[APIKeyword.error].string else {
                         result(error.localizedDescription, nil)
                         return

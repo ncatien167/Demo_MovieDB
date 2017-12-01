@@ -14,8 +14,8 @@ class SearchMovieTBVC: UITableViewCell {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblRated: UILabel!
     @IBOutlet weak var lblRenges: UILabel!
-    @IBOutlet weak var txvOverview: UITextView!
-
+    @IBOutlet weak var lblOverview: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

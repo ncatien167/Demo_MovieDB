@@ -15,10 +15,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--LoginVC-->
         <scene sceneID="0oo-cE-sm1">
             <objects>
-                <viewController id="umD-Fo-Cb0" sceneMemberID="viewController">
+                <viewController id="umD-Fo-Cb0" customClass="LoginVC" customModule="Demo_MovieDB" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zGH-G5-vFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -92,6 +92,9 @@
                                 <state key="normal" title="LOGIN">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="btnLoginPressed:" destination="umD-Fo-Cb0" eventType="touchUpInside" id="kKy-Us-DfK"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pca-Zc-y8C">
                                 <rect key="frame" x="175" y="452" width="25" height="23.5"/>
@@ -109,6 +112,9 @@
                                 <state key="normal" title="Sign up via website themoviedb.org">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="btnSignUpWithWebsite:" destination="umD-Fo-Cb0" eventType="touchUpInside" id="wi2-eU-plS"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image2" translatesAutoresizingMaskIntoConstraints="NO" id="DiL-PO-rjC">
                                 <rect key="frame" x="36" y="607" width="140" height="25"/>
@@ -144,6 +150,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ies-8l-FNg"/>
                     </view>
+                    <connections>
+                        <outlet property="txfPassword" destination="oCv-po-zwh" id="cey-nD-Xpz"/>
+                        <outlet property="txfUsername" destination="Gya-vF-GT1" id="1ER-4M-IhD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y9S-1L-Mb5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

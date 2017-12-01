@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "533724371.951388"
+            timestampString = "533814252.625193"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "setupDataDetail(movie:)"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "markAsFaviriteMovie(with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "533724371.951473"
+            timestampString = "533814252.625279"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "setupDataDetail(movie:)"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "markAsFaviriteMovie(with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,30 +41,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/SearchMovieVC.swift"
-            timestampString = "533729003.766706"
+            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
+            timestampString = "533814252.625348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "searchMovieWith(_:)"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "markAsFaviriteMovie(with:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/SearchMovieVC.swift"
-            timestampString = "533729003.76712"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "searchMovieWith(_:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Demo_MovieDB.DetailMovieVC.markAsFaviriteMovie(with: Swift.String) -&gt; ()"
+                  moduleName = "Demo_MovieDB"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
+                  timestampString = "533814252.739805"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "1167">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in Demo_MovieDB.DetailMovieVC.markAsFaviriteMovie(with: Swift.String) -&gt; ()"
+                  moduleName = "Demo_MovieDB"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
+                  timestampString = "533814252.742525"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

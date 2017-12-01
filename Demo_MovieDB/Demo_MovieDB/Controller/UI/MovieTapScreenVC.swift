@@ -10,8 +10,15 @@ import UIKit
 import Alamofire
 import SDWebImage
 
+enum segment: Int {
+    case Popular = 0
+    case Now = 1
+    case TopRated = 2
+}
+
 class MovieTapScreenVC: BaseViewController {
 
+    @IBOutlet weak var swicthSegment: UISegmentedControl!
     @IBOutlet weak var tbvMovie: UITableView!
     var movieArray: Array<Movie> = []
     
@@ -27,7 +34,6 @@ class MovieTapScreenVC: BaseViewController {
         tbvMovie.rowHeight = 168
         btnSearch()
         getMovieList()
-        
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
     }
@@ -39,35 +45,35 @@ class MovieTapScreenVC: BaseViewController {
         
     @IBAction func btnSearchPressed(_ sender: Any) {
         let vcSearch = storyboard?.instantiateViewController(withIdentifier: "SearchMovieVC") as! SearchMovieVC
+        vcSearch.tabBarController?.tabBar.isHidden = false
         let navc = UINavigationController.init(rootViewController: vcSearch)
         tabBarController?.present(navc, animated: true, completion: nil)
     }
     
     func getMovieList() {
-        let params: Parameters = [APIKeyword.apiKey : "ee8cf966d22254270f6faa1948ecf3fc"]
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
+        self.showHUD(view: self.view)
         APIController.request(manager: .movieList, params: params) { (error, response) in
-            
+            self.hideHUD(view: self.view)
             if error != nil {
-                
+                self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response!["results"].arrayObject
-                for movies in results! {
-                    let movie = Movie(with: movies as! [String : Any])
-                    self.movieArray.append(movie)
+                if results == nil {
+                    if let id = response?["status_message"].stringValue
+                    {
+                        self.showAlertTitle("Error", "Status_message: " + id, self)
+                    }
+                    
+                } else {
+                    for movies in results! {
+                        let movie = Movie(with: movies as! [String : Any])
+                        self.movieArray.append(movie)
+                    }
+                    self.tbvMovie.reloadData()
                 }
-                self.tbvMovie.reloadData()
             }
         }
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
         
     }
 
@@ -82,10 +88,30 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
         if self.movieArray.count > 0 {
             let movie = self.movieArray[indexPath.row]
-            cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-            cell.lblTitle.text = movie.title
-            cell.lblRated.text = String(movie.vote_average)
-            cell.txvOverview.text = movie.overview
+            switch self.swicthSegment.selectedSegmentIndex {
+            case 0:
+                cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
+                cell.lblTitle.text = movie.title
+                cell.lblRated.text = String(movie.vote_average)
+                cell.lblOverview.text = movie.overview
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            case 1:
+                cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
+                cell.lblTitle.text = movie.title
+                cell.lblRated.text = String(movie.vote_average)
+                cell.lblOverview.text = movie.overview
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            case 2:
+                if movie.vote_average > 7.5 {
+                    cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
+                    cell.lblTitle.text = movie.title
+                    cell.lblRated.text = String(movie.vote_average)
+                    cell.lblOverview.text = movie.overview
+                    cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+                }
+            default:
+                break
+            }
         }
         return cell
     }
@@ -98,6 +124,24 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
         present(navc, animated: true, completion: nil)
     }
     
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
+        setCellColor(UIColor.rpb(red: 200, green: 200, blue: 200), for: cell)
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
+        setCellColor(.clear, for: cell)
+    }
+    
+    func setCellColor(_ color: UIColor, for cell: UITableViewCell) {
+        cell.contentView.backgroundColor = color
+        cell.backgroundColor = color
+    }
     
 }
 

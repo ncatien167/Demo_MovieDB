@@ -26,20 +26,20 @@ class Movie: NSObject {
     var budget: Double!
     
     init(with response: [String : Any]) {
-        vote_count = response["vote_count"] as? Int ?? -1
-        id = response["id"] as? Int ?? -1
-        vote_average = response["vote_average"] as? Double ?? -1
-        title = response["title"] as? String ?? ""
-        poster_path = response["poster_path"] as? String ?? ""
-        original_language = response["original_language"] as? String ?? ""
-        original_title = response["original_title"] as? String ?? ""
-        genre_ids = response["genre_ids"] as? Array<Int> ?? []
-        backdrop_path = response["backdrop_path"] as? String ?? ""
-        overview = response["overview"] as? String ?? ""
-        release_date = response["release_date"] as? String ?? ""
-        revenue = response["revenue"] as? Double ?? -1
-        runtime = response["runtime"] as? Int ?? -1
-        budget = response["budget"] as? Double ?? -1
+        vote_count          = response["vote_count"] as? Int ?? -1
+        id                  = response["id"] as? Int ?? -1
+        vote_average        = response["vote_average"] as? Double ?? -1
+        title               = response["title"] as? String ?? ""
+        poster_path         = response["poster_path"] as? String ?? ""
+        original_language   = response["original_language"] as? String ?? ""
+        original_title      = response["original_title"] as? String ?? ""
+        genre_ids           = response["genre_ids"] as? Array<Int> ?? []
+        backdrop_path       = response["backdrop_path"] as? String ?? ""
+        overview            = response["overview"] as? String ?? ""
+        release_date        = response["release_date"] as? String ?? ""
+        revenue             = response["revenue"] as? Double ?? -1
+        runtime             = response["runtime"] as? Int ?? -1
+        budget              = response["budget"] as? Double ?? -1
     }
     
     init(responseId: Dictionary<String, Any>) {
