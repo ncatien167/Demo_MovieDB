@@ -65,7 +65,7 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
                                   "query" : text]
             APIController.request(manager: .searchMovie, params: params) { (error, response) in
                 if error != nil {
-                
+                    self.showAlertTitle("Error", error!, self)
                 } else {
                     let results = response!["results"].arrayObject
                     for movies in results! {

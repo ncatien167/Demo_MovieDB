@@ -51,12 +51,20 @@ class BaseViewController: UIViewController {
     
     func showBackButton() {
         let image = UIImage(named: "ic_keyboard_arrow_left_white_36pt")
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backButtonPressed(_:)))
-        self.navigationItem.leftBarButtonItem = backButton
+        let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 50))
+        backButton.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
+        backButton.setImage(image, for: .normal)
+        backButton.transform = CGAffineTransform(translationX: -15, y: -2.5)
+        backButton.addTarget(self, action: #selector(backButtonPressed(_:)), for: .touchUpInside)
+        let btnView = UIView()
+        btnView.addSubview(backButton)
+        btnView.frame = CGRect(x: 0, y: 0, width: 40, height: 50)
+        let btnCustom = UIBarButtonItem(customView: btnView)
+        self.navigationItem.leftBarButtonItem = btnCustom
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
 
 }

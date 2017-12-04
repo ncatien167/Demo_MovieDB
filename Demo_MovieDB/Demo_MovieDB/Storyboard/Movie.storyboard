@@ -24,6 +24,13 @@
                     <view key="view" contentMode="scaleToFill" id="dcU-0q-AEn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tu6-zN-wmf">
+                                <rect key="frame" x="145" y="127" width="84" height="142"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="logout-icon"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="pu5-yZ-0nY"/>
                     </view>
@@ -42,7 +49,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1238" y="-581"/>
+            <point key="canvasLocation" x="1237.5999999999999" y="-581.55922038980509"/>
         </scene>
         <!--MOVIES-->
         <scene sceneID="DMv-wt-e59">
@@ -60,6 +67,9 @@
                                     <segment title="Top Rated"/>
                                 </segments>
                                 <color key="tintColor" red="0.0" green="0.72941176470000002" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="segmentSwitchChange:" destination="2ex-cA-4qg" eventType="valueChanged" id="bIb-OP-9wR"/>
+                                </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k0W-Rt-4Fe">
                                 <rect key="frame" x="0.0" y="107" width="375" height="0.5"/>
@@ -610,6 +620,7 @@
                         <viewLayoutGuide key="safeArea" id="8NY-8r-5l2"/>
                     </view>
                     <connections>
+                        <outlet property="btnFavorite" destination="5fJ-LP-Tpv" id="6Oa-oA-BxW"/>
                         <outlet property="imgBackDrop" destination="PH6-SW-wJJ" id="llE-wZ-goc"/>
                         <outlet property="lblBudget" destination="Ru4-TJ-x9U" id="Zd5-6e-WiZ"/>
                         <outlet property="lblGenres" destination="hgk-Zb-mul" id="0AX-jW-qa5"/>
@@ -654,7 +665,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="VSR-qR-NaP">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="FJC-AX-k3S" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBar" automaticallyAdjustsScrollViewInsets="NO" id="FJC-AX-k3S" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Xam-Jf-9RS">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -728,5 +739,6 @@
         <image name="ic_person_white" width="24" height="24"/>
         <image name="ic_search_white" width="24" height="24"/>
         <image name="ic_star_rate_18pt" width="18" height="18"/>
+        <image name="logout-icon" width="30" height="23"/>
     </resources>
 </document>

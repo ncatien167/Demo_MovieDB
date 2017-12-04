@@ -23,17 +23,22 @@ class DetailMovieVC: BaseViewController {
     @IBOutlet weak var lblRunTime: UILabel!
     @IBOutlet weak var lblRevenue: UILabel!
     @IBOutlet weak var lblBudget: UILabel!
+    @IBOutlet weak var btnFavorite: UIButton!
+    
+    var isMarkOfFavorite: Bool!
+    var movieArray: [Movie] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         navigationItem.title = movie.title
-        tabBarController?.hidesBottomBarWhenPushed = false
     }
     
     override func setupUserInterFace() {
+        isMarkOfFavorite = true
         showBackButton()
-        getMovieWith(id: String(movie.id))
+        getFavoriteMovie(idMovie: movie.id)
+        getMovieWith(id: movie.id)
     }
     
     func setupDataDetail(movie: Movie) {
@@ -47,44 +52,91 @@ class DetailMovieVC: BaseViewController {
     }
     
     @IBAction func btnMarkAsFavorite(_ sender: Any) {
-        markAsFaviriteMovie(with: String(movie.id))
+        if isMarkOfFavorite == false {
+            removeFavorite(with: movie.id)
+            self.btnFavorite.setTitle("MASK OF FAVORITE", for: .normal)
+            isMarkOfFavorite = true
+        } else {
+            markAsFaviriteMovie(with: movie.id)
+            self.btnFavorite.setTitle("REMOVE FAVORITE", for: .normal)
+            isMarkOfFavorite = false
+        }
     }
-
 }
 
 extension DetailMovieVC {
     
-    func getMovieWith(id : String) {
-        let url = "https://api.themoviedb.org/3/movie/\(id)"
+    func getMovieWith(id : Int) {
+        let path = "movie/\(id)"
         let params: Parameters = [APIKeyword.apiKey : "ee8cf966d22254270f6faa1948ecf3fc"]
-        
-        Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                print(response.result.value!)
-                let data = JSON(response.result.value!)
-                let movie = Movie(with: data.dictionaryObject!)
+        self.showHUD(view: self.view)
+        APIController.request(path: path, params: params, manager: .movieDetail) { (error, response) in
+            self.hideHUD(view: self.view)
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                let data = response?.dictionaryObject
+                let movie = Movie(with: data!)
                 self.setupDataDetail(movie: movie)
-            case .failure(let error):
-                print(error)
             }
         }
     }
     
-    func markAsFaviriteMovie(with id: String) {
+    func markAsFaviriteMovie(with id: Int) {
         let requestBody = ["media_type": "movie",
-                           "media_id": String(movie.id),
-                           "favorite": "true"]
-        let url = "https://api.themoviedb.org/3/account/7702565/favorite?api_key=ee8cf966d22254270f6faa1948ecf3fc&session_id=481340b7b3fbf2523e93328ebdeb6548aa5b49dc"
+                           "media_id": movie.id,
+                           "favorite": isMarkOfFavorite] as [String : Any]
+        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
+        let path = "account/7702565/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
         
-        let header = [Header.contentType : Header.Content.application]
+        APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                self.showAlertTitle("Confirm", "As movie to favorite is susseccfuly", self)
+            }
+        }
+    }
+    
+    func getFavoriteMovie(idMovie: Int) {
+        let id = UserDefaults.standard.value(forKey: "UserId")!
+        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
+                                  APIKeyword.Account.sessionId: sessionId]
         
-        Alamofire.request(url, method: .post, parameters: requestBody, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                print(response)
-            case .failure(let error):
-                print(error)
+        let path = "account/\(id)/favorite/movies"
+        self.showHUD(view: self.view)
+        APIController.request(path: path, params: params, manager: .getFavoriteMovie) { (error, response) in
+            self.hideHUD(view: self.view)
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                let results = response!["results"].arrayObject
+                for data in results! {
+                    let movie = Movie(with: data as! [String : Any])
+                    if idMovie == movie.id {
+                        self.btnFavorite.setTitle("REMOVE FAVORITE", for: .normal)
+                        self.isMarkOfFavorite = false
+                    }
+                }
+            }
+        }
+    }
+    
+    func removeFavorite(with id: Int) {
+        let requestBody = ["media_type": "movie",
+                           "media_id": id,
+                           "favorite": isMarkOfFavorite] as [String : Any]
+        let accountId = UserDefaults.standard.value(forKey: "UserId")!
+        //"https://api.themoviedb.org/3/account/7702565/favorite? api_key=ee8cf966d22254270f6faa1948ecf3fc & session_id=6ce04adea96a494fd67d4065c12e912369daa844"
+        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
+        let path = "account/\(accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
+        
+        APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

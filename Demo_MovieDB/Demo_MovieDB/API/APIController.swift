@@ -21,6 +21,7 @@ struct APIController {
         Logger.log(message: "URL: \(url)", event: .info)
         
         Alamofire.request(url, method: manager.method, parameters: params, encoding: manager.encoding, headers: manager.header).responseJSON { (responseObject) -> Void in
+            print(url)
             switch responseObject.result {
             case .success(let data):
                 
@@ -39,9 +40,9 @@ struct APIController {
                         result(error.localizedDescription, nil)
                         return
                     }
+                    
                     result(message, nil)
                     Logger.log(message: response.prettyPrinted(), event: .info)
-                    
                 }
             }
         }
@@ -52,7 +53,7 @@ struct APIController {
         Logger.log(message: "URL: \(manager.url)", event: .info)
         
         Alamofire.request(manager.url, method: manager.method, parameters: params, encoding: manager.encoding, headers: manager.header).responseJSON { (responseObject) -> Void in
-            
+            print(manager.url)
             switch responseObject.result {
             case .success(let data):
                 
@@ -75,13 +76,9 @@ struct APIController {
                     Logger.log(message: response.prettyPrinted(), event: .info)
                     
                 }
-                
             }
-            
         }
-        
     }
-    
 }
 
 // JSON Pretty Printed Extension

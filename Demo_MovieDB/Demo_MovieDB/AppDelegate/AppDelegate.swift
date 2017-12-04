@@ -15,26 +15,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        let User: String = UserDefaults.standard.value(forKey: "Token") as? String ?? ""
+        if User.isEmpty {
+            setupLoginViewController()
+        } else {
+            print(UserDefaults.standard.value(forKey: "Token")!)
+            setupHomeViewController()
+        }
         return true
     }
     
-//    func setupLoginViewController() {
-//        self.window = UIWindow(frame: UIScreen.main.bounds)
-//        let storyboard = UIStoryboard(name: "LoginStoryboard", bundle: nil)
-//        let loginViewController = storyboard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! FirstLoginViewController
-//        self.window?.rootViewController = loginViewController
-//        self.window?.makeKeyAndVisible()
-//    }
+    func setupLoginViewController() {
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let vcLogin = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+        self.window?.rootViewController = vcLogin
+        self.window?.makeKeyAndVisible()
+    }
     
     func setupHomeViewController() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let storyboard = UIStoryboard(name: "Movie", bundle: nil)
-        let vcMovieTapScreen = storyboard.instantiateViewController(withIdentifier: "MovieTapScreenVC") as! MovieTapScreenVC
-        let navc = UINavigationController.init(rootViewController: vcMovieTapScreen)
-        navc.navigationBar.barTintColor = .black
-        navc.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.rpb(red: 0, green: 186, blue: 185)]
-        self.window?.rootViewController = navc
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Movie", bundle:nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "tabBar")
+        self.window?.rootViewController = vc
+        let myTabBar = self.window?.rootViewController as! UITabBarController
+        myTabBar.selectedIndex = 0
         self.window?.makeKeyAndVisible()
     }
 

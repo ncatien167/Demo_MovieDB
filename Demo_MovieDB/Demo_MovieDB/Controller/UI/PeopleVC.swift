@@ -7,29 +7,29 @@
 //
 
 import UIKit
+import Alamofire
 
 class PeopleVC: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func getAllPeople() {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
+        
+        APIController.request(manager: .getPeople, params: params) { (error, response) in
+            if error != nil {
+                
+            } else {
+                let results = response!["results"].arrayObject
+                for people in results {
+                    
+                }
+            }
+        }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

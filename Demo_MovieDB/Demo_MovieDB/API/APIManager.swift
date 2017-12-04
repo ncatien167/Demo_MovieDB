@@ -12,7 +12,16 @@ enum APIManager {
  
     case movieList
     case searchMovie
-    case favoriteMovie
+    case movieDetail
+    case addFavoriteMovie
+    case getToken
+    case login
+    case sessionId
+    case account
+    case topRated
+    case nowPlaying
+    case getFavoriteMovie
+    case getPeople
 }
 
 extension APIManager {
@@ -22,17 +31,34 @@ extension APIManager {
     //MARK: - URL
     
     var url: String {
-        
         var path = ""
-
         switch self {
         case .movieList:
             path = "movie/popular"
         case .searchMovie:
             path = "search/movie"
-        case .favoriteMovie:
-            path = "account/favorite/movies"
+        case .addFavoriteMovie:
+            path = ""
+        case .movieDetail:
+            path = ""
+        case .getToken:
+            path = "authentication/token/new"
+        case .login:
+            path = "authentication/token/validate_with_login"
+        case .sessionId:
+            path = "authentication/session/new"
+        case .account:
+            path = "account"
+        case .topRated:
+            path = "movie/top_rated"
+        case .nowPlaying:
+            path = "movie/now_playing"
+        case .getFavoriteMovie:
+            path = ""
+        case .getPeople:
+            path = "person/popular"
         }
+        
         return baseURL + path
     }
     
@@ -45,8 +71,26 @@ extension APIManager {
             return .get
         case .searchMovie:
             return .get
-        case .favoriteMovie:
+        case .addFavoriteMovie:
             return .post
+        case .movieDetail:
+            return .get
+        case .getToken:
+            return .get
+        case .login:
+            return .get
+        case .sessionId:
+            return .get
+        case .account:
+            return .get
+        case .topRated:
+            return .get
+        case .nowPlaying:
+            return .get
+        case .getFavoriteMovie:
+            return .get
+        case .getPeople:
+            return .get
         }
     }
         
@@ -59,8 +103,26 @@ extension APIManager {
             return URLEncoding.default
         case .searchMovie:
             return URLEncoding.default
-        case .favoriteMovie:
+        case .addFavoriteMovie:
             return JSONEncoding.default
+        case .movieDetail:
+            return URLEncoding.default
+        case .getToken:
+            return URLEncoding.default
+        case .login:
+            return URLEncoding.default
+        case .sessionId:
+            return URLEncoding.default
+        case .account:
+            return URLEncoding.default
+        case .topRated:
+            return URLEncoding.default
+        case .nowPlaying:
+            return URLEncoding.default
+        case .getFavoriteMovie:
+            return URLEncoding.default
+        case .getPeople:
+            return URLEncoding.default
         }
         
     }
@@ -74,8 +136,26 @@ extension APIManager {
             return [:]
         case .searchMovie:
             return [:]
-        case .favoriteMovie:
-            return [Header.contentType : " "]
+        case .addFavoriteMovie:
+            return [Header.contentType : Header.Content.application]
+        case .movieDetail:
+            return [:]
+        case .getToken:
+            return [:]
+        case .login:
+            return [:]
+        case .sessionId:
+            return [:]
+        case .account:
+            return [:]
+        case .topRated:
+            return [:]
+        case .nowPlaying:
+            return [:]
+        case .getFavoriteMovie:
+            return [:]
+        case .getPeople:
+            return [:]
         }
     }
 }
