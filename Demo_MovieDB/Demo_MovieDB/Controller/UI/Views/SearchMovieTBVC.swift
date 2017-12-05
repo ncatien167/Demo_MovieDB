@@ -20,6 +20,13 @@ class SearchMovieTBVC: UITableViewCell {
         super.awakeFromNib()
         
     }
+    
+    func bindData(movie: Movie) {
+        imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
+        lblTitle.text = movie.title
+        lblRated.text = String(movie.vote_average)
+        lblOverview.text = movie.overview
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

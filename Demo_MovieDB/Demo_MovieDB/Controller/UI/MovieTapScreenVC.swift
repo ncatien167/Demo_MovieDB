@@ -23,6 +23,7 @@ class MovieTapScreenVC: BaseViewController {
     var movieArray: Array<Movie> = []
     var topRatedMovieArray: Array<Movie> = []
     var nowPlayingMovieArray: Array<Movie> = []
+    var genre: Dictionary <String, Any> = [:]
     
     let slideMenu = SlideMenu()
     
@@ -33,18 +34,20 @@ class MovieTapScreenVC: BaseViewController {
         UINavigationBar.appearance().barTintColor = .black
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.rpb(red: 0, green: 186, blue: 185)]
         
-       
     }
     
     override func setupUserInterFace() {
-        tbvMovie.rowHeight = 168
+        tbvMovie.rowHeight = 181
+        tbvMovie.estimatedRowHeight = 181
         btnSearch()
         showMenuButton()
         getMovieList()
+        getAllGenres()
         getTopRatedMovie()
         getNowPlayingMovie()
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
+        tbvMovie.contentInset = UIEdgeInsetsMake(6, 0, 7, 0)
     }
     
     //MARK: - Menu Button
@@ -101,8 +104,7 @@ class MovieTapScreenVC: BaseViewController {
             } else {
                 let results = response!["results"].arrayObject
                 if results == nil {
-                    if let id = response?["status_message"].stringValue
-                    {
+                    if let id = response?["status_message"].stringValue {
                         self.showAlertTitle("Error", "Status_message: " + id, self)
                     }
                 } else {
@@ -126,8 +128,7 @@ class MovieTapScreenVC: BaseViewController {
             } else {
                 let results = response!["results"].arrayObject
                 if results == nil {
-                    if let id = response?["status_message"].stringValue
-                    {
+                    if let id = response?["status_message"].stringValue {
                         self.showAlertTitle("Error", "Status_message: " + id, self)
                     }
                 } else {
@@ -151,8 +152,7 @@ class MovieTapScreenVC: BaseViewController {
             } else {
                 let results = response!["results"].arrayObject
                 if results == nil {
-                    if let id = response?["status_message"].stringValue
-                    {
+                    if let id = response?["status_message"].stringValue {
                         self.showAlertTitle("Error", "Status_message: " + id, self)
                     }
                 } else {
@@ -164,6 +164,35 @@ class MovieTapScreenVC: BaseViewController {
                 }
             }
         }
+    }
+    
+    //MARK: - Get Genres
+    
+    func getAllGenres() {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
+        APIController.request(manager: .getGenres, params: params) { (error, response) in
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                let results = response!["genres"].arrayObject
+                for genres in results! {
+                    let genre = Movie.Genres(with: genres as! [String : Any])
+                    self.genre.updateValue(genre.name, forKey: String(genre.id))
+                }
+                print(self.genre)
+            }
+        }
+    }
+    
+    func setupGenre(with genresId: Array<Int>!) -> String {
+        var genresString = ""
+        var str = ""
+        for id in genresId! {
+            let idString = String(id)
+            str.append("\(self.genre["\(idString)"] as! String), ")
+        }
+        genresString = String(str.dropLast(2))
+        return genresString
     }
 }
 
@@ -187,24 +216,21 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
             switch self.swicthSegment.selectedSegmentIndex {
             case 0:
                 let movie = self.movieArray[indexPath.row]
-                cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-                cell.lblTitle.text = movie.title
-                cell.lblRated.text = String(movie.vote_average)
-                cell.lblOverview.text = movie.overview
+                cell.selectionStyle = .default
+                cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
+                cell.bindData(movie: movie)
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             case 1:
                 let movie = self.nowPlayingMovieArray[indexPath.row]
-                cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-                cell.lblTitle.text = movie.title
-                cell.lblRated.text = String(movie.vote_average)
-                cell.lblOverview.text = movie.overview
+                cell.bindData(movie: movie)
+                cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
+                cell.bindData(movie: movie)
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             case 2:
                 let movie = self.topRatedMovieArray[indexPath.row]
-                cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-                cell.lblTitle.text = movie.title
-                cell.lblRated.text = String(movie.vote_average)
-                cell.lblOverview.text = movie.overview
+                cell.bindData(movie: movie)
+                cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
+                cell.bindData(movie: movie)
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             default:
                 break

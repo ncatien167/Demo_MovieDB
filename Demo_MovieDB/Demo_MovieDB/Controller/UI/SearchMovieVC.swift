@@ -18,6 +18,7 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     var movieArray: [Movie] = []
     var movieFilterArray: [Movie] = []
     var isSearch: Bool = false
+    var genre: Dictionary <String, Any> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,7 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
 
     override func setupUserInterFace() {
         tabBarController?.tabBar.isHidden = false
-        
+        getAllGenres()
         showBackButton()
         navigationItem.title = "SEARCH"
         tbvMovie.rowHeight = 181
@@ -34,7 +35,10 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
         sbMovie.delegate = self
+        tbvMovie.contentInset = UIEdgeInsetsMake(0, 0, 10, 0)
     }
+    
+    //MARK: - Search Movie
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchMovieWith(searchText)
@@ -57,6 +61,8 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
         tbvMovie.reloadData()
     }
     
+    
+    
     func searchMovieWith(_ text: String) {
         if text.isEmpty {
             return
@@ -76,12 +82,40 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
             }
         }
     }
+    
+    //MARK: - Get Genres
+    
+    func getAllGenres() {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
+        APIController.request(manager: .getGenres, params: params) { (error, response) in
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                let results = response!["genres"].arrayObject
+                for genres in results! {
+                    let genre = Movie.Genres(with: genres as! [String : Any])
+                    self.genre.updateValue(genre.name, forKey: String(genre.id))
+                }
+                print(self.genre)
+            }
+        }
+    }
+    
+    func setupGenre(with genresId: Array<Int>!) -> String {
+        var genresString = ""
+        var str = ""
+        for id in genresId! {
+            let idString = String(id)
+            str.append("\(self.genre["\(idString)"] as! String), ")
+        }
+        genresString = String(str.dropLast(2))
+        return genresString
+    }
 }
 
 extension SearchMovieVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(self.movieArray.count)
         return self.movieArray.count
     }
     
@@ -89,10 +123,8 @@ extension SearchMovieVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchMovieTBVC", for: indexPath) as! SearchMovieTBVC
         if self.movieArray.count > 0 {
             let movie = self.movieArray[indexPath.row]
-            cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-            cell.lblTitle.text = movie.title
-            cell.lblRated.text = String(movie.vote_average)
-            cell.lblOverview.text = movie.overview
+            cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
+            cell.bindData(movie: movie)
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }
         return cell
@@ -102,8 +134,7 @@ extension SearchMovieVC: UITableViewDataSource, UITableViewDelegate {
         let vcDetailMovie = storyboard?.instantiateViewController(withIdentifier: "DetailMovieVC") as! DetailMovieVC
         vcDetailMovie.hidesBottomBarWhenPushed = false
         vcDetailMovie.movie = self.movieArray[indexPath.row]
-        let navc = UINavigationController.init(rootViewController: vcDetailMovie)
-        present(navc, animated: true, completion: nil)
+        navigationController?.pushViewController(vcDetailMovie, animated: true)
     }
     
 }

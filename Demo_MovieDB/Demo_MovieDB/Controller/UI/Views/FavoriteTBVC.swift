@@ -18,13 +18,19 @@ class FavoriteTBVC: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+    }
+    
+    func bindData(movie: Movie) {
+        imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
+        lblTitle.text = movie.title
+        lblRated.text = String(movie.vote_average)
+        lblOverview.text = movie.overview
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
 }

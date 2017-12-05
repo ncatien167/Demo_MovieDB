@@ -21,11 +21,18 @@ class SlideMenu: NSObject {
         return view
     }()
     
+    let imgView: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "LoginThumb_image")
+        img.contentMode = .scaleToFill
+        return img
+    }()
+    
     let logOut: UIButton = {
         let btn = UIButton()
         btn.setTitle("Log Out", for: .normal)
         btn.setImage(UIImage(named: "logout-icon"), for: .normal)
-        btn.backgroundColor = .blue
+        btn.backgroundColor = UIColor.rpb(red: 0, green: 186, blue: 185)
         return btn
     }()
     
@@ -79,9 +86,14 @@ class SlideMenu: NSObject {
     }
     
     func setupDetail() {
+        menuView.addSubview(imgView)
         menuView.addSubview(logOut)
+        
+        menuView.addContrainsWithFormat("H:|[v0]|", view: imgView)
+        menuView.addContrainsWithFormat("V:|[v0]|", view: imgView)
         menuView.addContrainsWithFormat("H:|[v0]|", view: logOut)
         menuView.addContrainsWithFormat("V:|-64-[v0(50)]", view: logOut)
+        
         
         logOut.addTarget(self, action: #selector(btnLogOutPressed(_:)), for: .touchUpInside)
     }

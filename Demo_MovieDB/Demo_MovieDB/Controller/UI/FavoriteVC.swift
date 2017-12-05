@@ -14,6 +14,7 @@ class FavoriteVC: BaseViewController {
 
     @IBOutlet weak var tbvMovie: UITableView!
     var movieArray: [Movie] = []
+    var genre: Dictionary <String, Any> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,7 @@ class FavoriteVC: BaseViewController {
         movieArray.removeAll()
         getFavoriteMovie()
         self.tbvMovie.reloadData()
+        getAllGenres()
     }
     
     override func setupUserInterFace() {
@@ -32,6 +34,7 @@ class FavoriteVC: BaseViewController {
         tbvMovie.estimatedRowHeight = 181
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
+        tbvMovie.contentInset = UIEdgeInsetsMake(0, 0, 10, 0)
     }
     
     func getFavoriteMovie() {
@@ -56,6 +59,35 @@ class FavoriteVC: BaseViewController {
             }
         }
     }
+    
+    //MARK: - Get Genres
+    
+    func getAllGenres() {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
+        APIController.request(manager: .getGenres, params: params) { (error, response) in
+            if error != nil {
+                self.showAlertTitle("Error", error!, self)
+            } else {
+                let results = response!["genres"].arrayObject
+                for genres in results! {
+                    let genre = Movie.Genres(with: genres as! [String : Any])
+                    self.genre.updateValue(genre.name, forKey: String(genre.id))
+                }
+                print(self.genre)
+            }
+        }
+    }
+    
+    func setupGenre(with genresId: Array<Int>!) -> String {
+        var genresString = ""
+        var str = ""
+        for id in genresId! {
+            let idString = String(id)
+            str.append("\(self.genre["\(idString)"] as! String), ")
+        }
+        genresString = String(str.dropLast(2))
+        return genresString
+    }
 }
 
 extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
@@ -69,11 +101,10 @@ extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteTBVC", for: indexPath) as! FavoriteTBVC
         if self.movieArray.count > 0 {
             let movie = self.movieArray[indexPath.row]
-            cell.imgPoster.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.poster_path!)"), completed: nil)
-            cell.lblTitle.text = movie.title
-            cell.lblRated.text = String(movie.vote_average)
-            cell.lblOverview.text = movie.overview
+            cell.bindData(movie: movie)
+            cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            
         }
         return cell
     }

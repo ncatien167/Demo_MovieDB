@@ -10,4 +10,7 @@ import UIKit
 
 class PeopleCVWC: UICollectionViewCell {
     
+    @IBOutlet weak var imgPeople: UIImageView!
+    @IBOutlet weak var lblNamePeople: UILabel!
+    
 }

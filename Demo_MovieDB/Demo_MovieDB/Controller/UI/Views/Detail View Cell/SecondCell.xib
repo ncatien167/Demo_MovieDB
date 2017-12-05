@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Book</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SecondCell" id="KGk-i7-Jjw" customClass="SecondCell" customModule="Demo_MovieDB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Boy-1b-aKr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6s-Qe-zkk">
+                                <rect key="frame" x="13" y="13" width="294" height="23.5"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="F6s-Qe-zkk" firstAttribute="leading" secondItem="Boy-1b-aKr" secondAttribute="leading" constant="13" id="c9E-cg-JRL"/>
+                            <constraint firstItem="F6s-Qe-zkk" firstAttribute="top" secondItem="Boy-1b-aKr" secondAttribute="top" constant="13" id="j7f-Lm-b6u"/>
+                            <constraint firstAttribute="height" constant="119.5" id="oSh-1W-nEa"/>
+                            <constraint firstAttribute="trailing" secondItem="F6s-Qe-zkk" secondAttribute="trailing" constant="13" id="tjj-Fz-Bfb"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Boy-1b-aKr" secondAttribute="bottom" id="4wR-2B-yx9"/>
+                    <constraint firstItem="Boy-1b-aKr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Fme-gJ-bwP"/>
+                    <constraint firstItem="Boy-1b-aKr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="c2h-O6-xWJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Boy-1b-aKr" secondAttribute="trailing" id="lty-vL-XLh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblOverview" destination="F6s-Qe-zkk" id="lKM-r3-aJq"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
