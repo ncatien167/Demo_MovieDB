@@ -40,11 +40,6 @@ class FirstCell: UITableViewCell {
         lblTitle.text = movie.title
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-    }
-    
     @IBAction func btnMarkOfFavorite(_ sender: Any) {
         if self.isMarkOfFavorite == false {
             NotificationCenter.default.post(name: NSNotification.Name("Remove Out Favorite"), object: nil)
@@ -57,6 +52,11 @@ class FirstCell: UITableViewCell {
             btnFavorite.backgroundColor = .gray
             self.isMarkOfFavorite = false
         }
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
     }
     
 }

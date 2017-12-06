@@ -64,6 +64,16 @@ class DetailMovieVC: BaseViewController {
         }
         genresString = String(genre.dropLast(2))
     }
+    
+    func formatter(money: Double) -> String{
+        let number = NSDecimalNumber(decimal: Decimal(money))
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        let result = numberFormatter.string(from: number)
+        return result!
+    }
+    
 }
 
 extension DetailMovieVC {
@@ -146,15 +156,6 @@ extension DetailMovieVC {
         }
     }
     
-    func formatter(money: Double) -> String{
-        let number = NSDecimalNumber(decimal: Decimal(money))
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .currency
-        numberFormatter.locale = Locale.current
-        let result = numberFormatter.string(from: number)
-        return result!
-    }
-    
 }
 
 extension DetailMovieVC: UITableViewDataSource, UITableViewDelegate {
@@ -204,7 +205,6 @@ extension DetailMovieVC: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
     }
-    
 }
 
 

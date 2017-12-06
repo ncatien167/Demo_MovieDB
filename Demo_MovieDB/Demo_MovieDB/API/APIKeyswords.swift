@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 struct APIKeyword {
-    
     static let baseURL              = "https://api.themoviedb.org/3/"
     static let error                = "errors"
     static let apiKey               = "api_key"
@@ -18,7 +17,6 @@ struct APIKeyword {
     static let api_key              = "ee8cf966d22254270f6faa1948ecf3fc"
     
     struct Movie {
-        
         static let movieId          = "movie_id"
         static let page             = "page"
         static let language         = "language"
@@ -35,7 +33,6 @@ struct APIKeyword {
 }
 
 struct Header {
-    
     static let authorization        = "Authorization"
     static let contentType          = "Content-Type"
     

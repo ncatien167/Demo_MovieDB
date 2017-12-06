@@ -54,16 +54,13 @@ class SlideMenu: NSObject {
             view.alpha = 0
             
             UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-                
                 self.view.alpha = 1
                 self.menuView.frame = CGRect(x: x, y: 0, width: self.menuView.frame.width, height: self.menuView.frame.height)
-                
             }, completion: nil)
         }
     }
     
     @objc func handleDismiss() {
-        
         UIView.animate(withDuration: 1.0) {
             self.view.alpha = 0
             if let window = UIApplication.shared.keyWindow {
@@ -88,19 +85,15 @@ class SlideMenu: NSObject {
     func setupDetail() {
         menuView.addSubview(imgView)
         menuView.addSubview(logOut)
-        
         menuView.addContrainsWithFormat("H:|[v0]|", view: imgView)
         menuView.addContrainsWithFormat("V:|[v0]|", view: imgView)
         menuView.addContrainsWithFormat("H:|[v0]|", view: logOut)
         menuView.addContrainsWithFormat("V:|-64-[v0(50)]", view: logOut)
-        
-        
         logOut.addTarget(self, action: #selector(btnLogOutPressed(_:)), for: .touchUpInside)
     }
     
     override init() {
         super.init()
-        
         setupDetail()
     }
     

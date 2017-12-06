@@ -9,7 +9,6 @@
 import Alamofire
 
 enum APIManager {
- 
     case movieList
     case searchMovie
     case movieDetail
@@ -55,7 +54,6 @@ extension APIManager {
         case .getGenres:
             path = "genre/movie/list"
         }
-        
         return baseURL + path
     }
     
@@ -149,6 +147,7 @@ extension APIManager {
             return [:]
         }
     }
+    
 }
 
 

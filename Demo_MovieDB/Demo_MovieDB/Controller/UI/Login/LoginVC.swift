@@ -22,11 +22,9 @@ class LoginVC: BaseViewController {
         if let token = UserDefaults.standard.value(forKey: "Token") as? String {
             print("Token : \(token)")
         }
-        
         if let sessionId = UserDefaults.standard.value(forKey: "UserSessionId") as? String {
             print("UserSessionId : \(sessionId)")
         }
-        
         if let id = UserDefaults.standard.value(forKey: "UserId") as? String {
             print("UserSessionId : \(id)")
         }
@@ -41,17 +39,14 @@ class LoginVC: BaseViewController {
             completion(false, "Please enter user name.")
             return
         }
-        
         if password.isEmpty {
             completion(false, "Please enter password.")
             return
         }
-        
         if password.characters.count <= 6 {
             completion(false, "Minimum passwordlength: 8 characters.")
             return
         }
-        
         completion(true, "")
     }
     
@@ -61,7 +56,7 @@ class LoginVC: BaseViewController {
     }
     
     @IBAction func btnLoginPressed(_ sender: Any) {
-        getTokenWith()
+        getTokenWith(username: txfUsername.text!, password: txfPassword.text!)
     }
     
     @IBAction func btnSignUpWithWebsite(_ sender: Any) {
@@ -69,7 +64,6 @@ class LoginVC: BaseViewController {
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
-
 }
 
 extension LoginVC {
@@ -80,7 +74,6 @@ extension LoginVC {
         let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
         
         APIController.request(manager: .getToken, params: params) { (error, response) in
-            
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
@@ -91,22 +84,16 @@ extension LoginVC {
         }
     }
     
-    func getTokenWith() {
-        let username = self.txfUsername.text
-        let password = self.txfPassword.text
-
+    func getTokenWith(username: String!, password: String!) {
         validateTextField(username: username, password: password) { (isValidate, message) in
             if isValidate == false {
                 self.showAlertTitle("Error", message, self)
                 return
             } else {
-                let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
-                                          APIKeyword.Account.username : username!,
-                                          APIKeyword.Account.password : password!,
-                                          APIKeyword.Account.token : user.createToken]
+                let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.username : username!,
+                                          APIKeyword.Account.password : password!, APIKeyword.Account.token : user.createToken]
                 self.showHUD(view: self.view)
                 APIController.request(manager: .login, params: params) { (error, response) in
-                    self.hideHUD(view: self.view)
                     if error != nil {
                         self.showAlertTitle("Error", error!, self)
                     } else {
@@ -121,7 +108,6 @@ extension LoginVC {
                         } else {
                             print(UserManager.shared.request_token)
                             self.createSessionId()
-                            self.goToHomeScreen()
                         }
                     }
                 }
@@ -132,9 +118,7 @@ extension LoginVC {
     //MARK: - Get Sesssion ID
     
     func createSessionId() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
-                                  APIKeyword.Account.token : UserManager.shared.request_token]
-        
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.token : UserManager.shared.request_token]
         APIController.request(manager: .sessionId, params: params) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -150,19 +134,20 @@ extension LoginVC {
     //MARK: - Get Account User
     
     func getAccountDetail() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
-                                  APIKeyword.Account.sessionId : UserManager.shared.sessionId]
-        
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.sessionId : UserManager.shared.sessionId]
         APIController.request(manager: .account, params: params) { (error, response) in
+            self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response?.dictionaryObject
                 UserManager.shared.setUser(with: results!)
                 print(UserManager.shared.id)
+                self.goToHomeScreen()
             }
         }
     }
+    
 }
 
 

@@ -31,7 +31,6 @@ class PeopleVC: BaseViewController {
     
     func getAllPeople() {
         let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        
         APIController.request(manager: .getPeople, params: params) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -46,7 +45,6 @@ class PeopleVC: BaseViewController {
             }
         }
     }
-
 }
 
 extension PeopleVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

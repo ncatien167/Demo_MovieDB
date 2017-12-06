@@ -13,13 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let User: String = UserDefaults.standard.value(forKey: "Token") as? String ?? ""
         if User.isEmpty {
             setupLoginViewController()
         } else {
-            print(UserDefaults.standard.value(forKey: "Token")!)
             setupHomeViewController()
         }
         return true
@@ -42,27 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         myTabBar.selectedIndex = 0
         self.window?.makeKeyAndVisible()
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        
-    }
-
 
 }
 

@@ -41,7 +41,6 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     //MARK: - Search Movie
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         guard !searchText.isEmpty else {
             movieArray = []
             self.tbvMovie.reloadData()

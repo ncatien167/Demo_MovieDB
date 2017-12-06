@@ -40,9 +40,7 @@ class FavoriteVC: BaseViewController {
     func getFavoriteMovie() {
         let id = UserDefaults.standard.value(forKey: "UserId")!
         let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
-                                  APIKeyword.Account.sessionId: sessionId]
-        
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.sessionId: sessionId]
         let path = "account/\(id)/favorite/movies"
         self.showHUD(view: self.view)
         APIController.request(path: path, params: params, manager: .getFavoriteMovie) { (error, response) in
@@ -73,7 +71,6 @@ class FavoriteVC: BaseViewController {
                     let genre = Movie.Genres(with: genres as! [String : Any])
                     self.genre.updateValue(genre.name, forKey: String(genre.id))
                 }
-                print(self.genre)
             }
         }
     }
@@ -106,7 +103,6 @@ extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
             cell.bindData(movie: movie)
             cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-            
         }
         return cell
     }

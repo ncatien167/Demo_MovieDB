@@ -9,7 +9,6 @@
 import UIKit
 
 class UserManager: NSObject {
-    
     var createToken: String!
     var request_token: String!
     var guest_session_id: String!
@@ -18,11 +17,10 @@ class UserManager: NSObject {
     var sessionId: String!
     
     static let shared = UserManager()
-    
     private override init(){}
     
     init(with response: [String : Any]) {
-        createToken = response["request_token"] as? String ?? ""
+        createToken      = response["request_token"] as? String ?? ""
         guest_session_id = response["guest_session_id"] as? String ?? ""
     }
     
@@ -31,7 +29,6 @@ class UserManager: NSObject {
         if request_token != nil {
             UserDefaults.standard.set(request_token, forKey: "Token")
         }
-        
         UserDefaults.standard.synchronize()
     }
     
@@ -40,12 +37,10 @@ class UserManager: NSObject {
         if id != nil {
             UserDefaults.standard.set(id, forKey: "UserId")
         }
-        
         username = response["username"] as? String ?? ""
         if username != nil {
             UserDefaults.standard.set(username, forKey: "UserName")
         }
-        
         UserDefaults.standard.synchronize()
     }
     
@@ -54,7 +49,6 @@ class UserManager: NSObject {
         if sessionId != nil {
             UserDefaults.standard.set(sessionId, forKey: "UserSessionId")
         }
-        
         UserDefaults.standard.synchronize()
     }
     

@@ -10,7 +10,6 @@ import UIKit
 import SwiftyJSON
 
 class Movie: NSObject {
-    
     var vote_count: Int!
     var id: Int!
     var vote_average: Double!
@@ -62,7 +61,6 @@ class Movie: NSObject {
     }
     
     struct Genres {
-        
         var id: Int!
         var name: String!
         
@@ -75,7 +73,6 @@ class Movie: NSObject {
 }
 
 class People: NSObject {
-    
     var id: Int!
     var profile_path: String!
     var name: String!
