@@ -92,7 +92,6 @@ class FavoriteVC: BaseViewController {
 extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(self.movieArray.count)
         return self.movieArray.count
     }
     
