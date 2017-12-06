@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import  Alamofire
 
 class FirstCell: UITableViewCell {
 
@@ -22,16 +23,21 @@ class FirstCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        self.isMarkOfFavorite = true
+        btnFavorite.setTitle("MASK OF FAVORITE", for: .normal)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage), name: NSNotification.Name("isMark"), object: nil)
     }
     
-    func removeOutFavorite(movie: Movie, isMarkOfFavorite: Bool) {
-        self.movie = movie
-        if detail.isMarkOfFavorite == false {
-            btnFavorite.setTitle("MASK OF FAVORITE", for: .normal)
-        } else {
-            btnFavorite.setTitle("REMOVE OUT FAVORITE", for: .normal)
-        }
+    @objc func acceptMessage(_ notification: Notification) {
+        self.isMarkOfFavorite = false
+        btnFavorite.setTitle("REMOVE FROM FAVORITE", for: .normal)
+        btnFavorite.backgroundColor = .gray
+    }
+    
+    func bindData(movie: Movie) {
+        imgProfilePath.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.backdrop_path!)"), completed: nil)
+        lblRated.text = "\(String(movie.vote_average))/10"
+        lblTitle.text = movie.title
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -40,16 +46,17 @@ class FirstCell: UITableViewCell {
     }
     
     @IBAction func btnMarkOfFavorite(_ sender: Any) {
-        if detail.isMarkOfFavorite == false {
+        if self.isMarkOfFavorite == false {
+            NotificationCenter.default.post(name: NSNotification.Name("Remove Out Favorite"), object: nil)
             btnFavorite.setTitle("MASK OF FAVORITE", for: .normal)
-            detail.setupbtnMarkOfFavorite(movie: self.movie, isMark: detail.isMarkOfFavorite)
-            self.detail.isMarkOfFavorite = true
+            btnFavorite.backgroundColor = UIColor.rpb(red: 0, green: 186, blue: 185)
+            self.isMarkOfFavorite = true
         } else {
+            NotificationCenter.default.post(name: NSNotification.Name("Mark Of Favorite"), object: nil)
             btnFavorite.setTitle("REMOVE OUT FAVORITE", for: .normal)
-            detail.setupbtnMarkOfFavorite(movie: self.movie, isMark: detail.isMarkOfFavorite)
-            self.detail.isMarkOfFavorite = false
+            btnFavorite.backgroundColor = .gray
+            self.isMarkOfFavorite = false
         }
-        
     }
     
 }

@@ -18,8 +18,6 @@ enum APIManager {
     case login
     case sessionId
     case account
-    case topRated
-    case nowPlaying
     case getFavoriteMovie
     case getPeople
     case getGenres
@@ -50,10 +48,6 @@ extension APIManager {
             path = "authentication/session/new"
         case .account:
             path = "account"
-        case .topRated:
-            path = "movie/top_rated"
-        case .nowPlaying:
-            path = "movie/now_playing"
         case .getFavoriteMovie:
             path = ""
         case .getPeople:
@@ -86,10 +80,6 @@ extension APIManager {
             return .get
         case .account:
             return .get
-        case .topRated:
-            return .get
-        case .nowPlaying:
-            return .get
         case .getFavoriteMovie:
             return .get
         case .getPeople:
@@ -119,10 +109,6 @@ extension APIManager {
         case .sessionId:
             return URLEncoding.default
         case .account:
-            return URLEncoding.default
-        case .topRated:
-            return URLEncoding.default
-        case .nowPlaying:
             return URLEncoding.default
         case .getFavoriteMovie:
             return URLEncoding.default
@@ -154,10 +140,6 @@ extension APIManager {
         case .sessionId:
             return [:]
         case .account:
-            return [:]
-        case .topRated:
-            return [:]
-        case .nowPlaying:
             return [:]
         case .getFavoriteMovie:
             return [:]

@@ -10,11 +10,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.534447"
+            timestampString = "534218895.505923"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "acceptMessage(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
+            timestampString = "534218895.506407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "setupbtnMarkOfFavorite(movie:isMark:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.535134"
+            timestampString = "534218895.506814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "setupbtnMarkOfFavorite(movie:isMark:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.535638"
+            timestampString = "534218895.50716"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "markAsFaviriteMovie(with:isMark:)"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "getFavoriteMovie(idMovie:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.536134"
+            timestampString = "534218895.507497"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "markAsFaviriteMovie(with:isMark:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "acceptMessage(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,60 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.536624"
+            timestampString = "534218949.579875"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "markAsFaviriteMovie(with:isMark:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Demo_MovieDB.DetailMovieVC.markAsFaviriteMovie(with: Swift.Optional&lt;Swift.Int&gt;, isMark: Swift.Bool) -&gt; ()"
-                  moduleName = "Demo_MovieDB"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-                  timestampString = "534160619.19566"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "98"
-                  endingLineNumber = "98"
-                  offsetFromSymbolStart = "2545">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;SwiftyJSON.JSON&gt;) -&gt; () in Demo_MovieDB.DetailMovieVC.markAsFaviriteMovie(with: Swift.Optional&lt;Swift.Int&gt;, isMark: Swift.Bool) -&gt; ()"
-                  moduleName = "Demo_MovieDB"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-                  timestampString = "534160619.197938"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "201">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/Views/Detail View Cell/FirstCell.swift"
-            timestampString = "534161018.537124"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "removeOutFavorite(movie:isMarkOfFavorite:)"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "getFavoriteMovie(idMovie:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,29 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/Views/Detail View Cell/FirstCell.swift"
-            timestampString = "534161018.537226"
+            filePath = "Demo_MovieDB/Controller/UI/Search Movie/SearchMovieVC.swift"
+            timestampString = "534235740.406413"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "btnMarkOfFavorite(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/Views/Detail View Cell/FirstCell.swift"
-            timestampString = "534161018.53731"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "btnMarkOfFavorite(_:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -169,13 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/Views/Detail View Cell/FirstCell.swift"
-            timestampString = "534161018.537388"
+            filePath = "Demo_MovieDB/Controller/UI/Search Movie/SearchMovieVC.swift"
+            timestampString = "534235740.4066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "removeOutFavorite(movie:isMarkOfFavorite:)"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,61 +137,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.537452"
+            filePath = "Demo_MovieDB/Controller/UI/Search Movie/SearchMovieVC.swift"
+            timestampString = "534235740.406698"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "removeFavorite(with:isMark:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Demo_MovieDB.DetailMovieVC.removeFavorite(with: Swift.Int, isMark: Swift.Bool) -&gt; ()"
-                  moduleName = "Demo_MovieDB"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-                  timestampString = "534160619.219334"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "2379">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;SwiftyJSON.JSON&gt;) -&gt; () in Demo_MovieDB.DetailMovieVC.removeFavorite(with: Swift.Int, isMark: Swift.Bool) -&gt; ()"
-                  moduleName = "Demo_MovieDB"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Desktop/Demo_MovieDB_APP/Demo_MovieDB/Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-                  timestampString = "534160619.221872"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
-                  offsetFromSymbolStart = "201">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.537843"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "removeFavorite(with:isMark:)"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "searchMovieWith(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,13 +153,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.538211"
+            filePath = "Demo_MovieDB/Controller/UI/Login/LoginVC.swift"
+            timestampString = "534235740.406785"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
-            landmarkName = "markAsFaviriteMovie(with:isMark:)"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "createSessionId()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -265,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Demo_MovieDB/Controller/UI/DetailMovieVC.swift"
-            timestampString = "534161018.538575"
+            filePath = "Demo_MovieDB/Controller/UI/Login/LoginVC.swift"
+            timestampString = "534235740.406872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "markAsFaviriteMovie(with:isMark:)"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "getAccountDetail()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

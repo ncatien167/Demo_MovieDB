@@ -34,7 +34,7 @@ class PeopleVC: BaseViewController {
         
         APIController.request(manager: .getPeople, params: params) { (error, response) in
             if error != nil {
-                
+                self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response!["results"].arrayObject
                 for peoples in results! {

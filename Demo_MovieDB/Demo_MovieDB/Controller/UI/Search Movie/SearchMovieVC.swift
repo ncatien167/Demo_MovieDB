@@ -41,17 +41,16 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     //MARK: - Search Movie
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchMovieWith(searchText)
+        
         guard !searchText.isEmpty else {
-            movieArray = movieFilterArray
+            movieArray = []
             self.tbvMovie.reloadData()
             return
         }
-        movieArray = movieFilterArray.filter({ (movie) -> Bool in
-            movie.title.lowercased().contains(searchText.lowercased())
-        })
+        searchMovieWith(searchText)
         self.tbvMovie.reloadData()
-        movieFilterArray = []
+        movieArray = []
+        genre = [:]
     }
     
     func getSearchArrayContains(_ text : String) {
@@ -61,14 +60,13 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
         tbvMovie.reloadData()
     }
     
-    
-    
     func searchMovieWith(_ text: String) {
         if text.isEmpty {
+            movieArray = []
+            self.tbvMovie.reloadData()
             return
         } else {
-            let params: Parameters = [APIKeyword.apiKey : "ee8cf966d22254270f6faa1948ecf3fc",
-                                  "query" : text]
+            let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, "query" : text]
             APIController.request(manager: .searchMovie, params: params) { (error, response) in
                 if error != nil {
                     self.showAlertTitle("Error", error!, self)
@@ -76,8 +74,9 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
                     let results = response!["results"].arrayObject
                     for movies in results! {
                         let movie = Movie(with: movies as! [String : Any])
-                        self.movieFilterArray.append(movie)
+                        self.movieArray.append(movie)
                     }
+                    self.tbvMovie.reloadData()
                 }
             }
         }
@@ -104,11 +103,13 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     func setupGenre(with genresId: Array<Int>!) -> String {
         var genresString = ""
         var str = ""
-        for id in genresId! {
-            let idString = String(id)
-            str.append("\(self.genre["\(idString)"] as! String), ")
+        if !self.genre.isEmpty {
+            for id in genresId! {
+                let idString = String(id)
+                str.append("\(self.genre["\(idString)"] as! String), ")
+            }
+            genresString = String(str.dropLast(2))
         }
-        genresString = String(str.dropLast(2))
         return genresString
     }
 }

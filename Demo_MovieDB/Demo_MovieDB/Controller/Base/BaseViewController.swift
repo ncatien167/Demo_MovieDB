@@ -14,6 +14,8 @@ import MBProgressHUD
 
 class BaseViewController: UIViewController {
 
+    let slideMenu = SlideMenu()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,13 +49,39 @@ class BaseViewController: UIViewController {
         MBProgressHUD.hide(for: view, animated: true)
     }
     
+    //MARK: - Menu Button
+    
+    func showMenuButton() {
+        let image = UIImage(named: "nav-menu")
+        let btnMenu = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(menuButtonPressed(_:)))
+        btnMenu.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
+        navigationItem.leftBarButtonItem = btnMenu
+    }
+    
+    @IBAction func menuButtonPressed(_ sender: Any) {
+        slideMenu.showSlideMenu()
+    }
+    
+    //MARK: - Search Button
+    
+    func btnSearch() {
+        let btnSearch = UIBarButtonItem(image: UIImage(named: "ic_search_white"), style: .plain, target: self, action: #selector(btnSearchPressed(_:)))
+        btnSearch.tintColor = UIColor.white
+        navigationItem.rightBarButtonItem = btnSearch
+    }
+    
+    @IBAction func btnSearchPressed(_ sender: Any) {
+        let vcSearch = storyboard?.instantiateViewController(withIdentifier: "SearchMovieVC") as! SearchMovieVC
+        navigationController?.pushViewController(vcSearch, animated: true)
+    }
+    
     //MARK: - Back Button
     
     func showBackButton() {
-        let image = UIImage(named: "ic_keyboard_arrow_left_white_36pt")
+        let image = UIImage(named: "ic_keyboard_arrow_left_white_36pt")?.withRenderingMode(.alwaysTemplate)
         let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 50))
-        backButton.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
         backButton.setImage(image, for: .normal)
+        backButton.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
         backButton.transform = CGAffineTransform(translationX: -15, y: -2.5)
         backButton.addTarget(self, action: #selector(backButtonPressed(_:)), for: .touchUpInside)
         let btnView = UIView()

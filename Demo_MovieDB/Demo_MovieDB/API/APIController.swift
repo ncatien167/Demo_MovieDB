@@ -14,7 +14,6 @@ typealias ErrorResponseBlock = (_ error: String?) -> Void
 typealias ResponseBlock = (_ errorResponse: String?, _ json: JSON?) -> Void
 
 struct APIController {
-    let url = "https://api.themoviedb.org/3/account/7702565/favorite?api_key=ee8cf966d22254270f6faa1948ecf3fc&session_id=481340b7b3fbf2523e93328ebdeb6548aa5b49dc"
     
     static func request(path: String, params: Parameters? = nil, manager: APIManager, result: @escaping ResponseBlock) {
         let url = APIKeyword.baseURL + path

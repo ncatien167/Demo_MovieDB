@@ -20,12 +20,13 @@ class MovieTapScreenVC: BaseViewController {
 
     @IBOutlet weak var swicthSegment: UISegmentedControl!
     @IBOutlet weak var tbvMovie: UITableView!
-    var movieArray: Array<Movie> = []
+    var popularMovieArray: Array<Movie> = []
     var topRatedMovieArray: Array<Movie> = []
     var nowPlayingMovieArray: Array<Movie> = []
     var genre: Dictionary <String, Any> = [:]
-    
-    let slideMenu = SlideMenu()
+    let pathPopular = "movie/popular"
+    let pathNow = "movie/now_playing"
+    let pathTopRated = "movie/top_rated"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,7 @@ class MovieTapScreenVC: BaseViewController {
         UINavigationBar.appearance().backgroundColor = .black
         UINavigationBar.appearance().barTintColor = .black
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.rpb(red: 0, green: 186, blue: 185)]
-        
+        swicthSegment.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .selected)
     }
     
     override func setupUserInterFace() {
@@ -41,63 +42,42 @@ class MovieTapScreenVC: BaseViewController {
         tbvMovie.estimatedRowHeight = 181
         btnSearch()
         showMenuButton()
-        getMovieList()
+        setupData()
         getAllGenres()
-        getTopRatedMovie()
-        getNowPlayingMovie()
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
         tbvMovie.contentInset = UIEdgeInsetsMake(6, 0, 7, 0)
     }
     
-    //MARK: - Menu Button
-    
-    func showMenuButton() {
-        let image = UIImage(named: "nav-menu")
-        let btnMenu = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(menuButtonPressed(_:)))
-        btnMenu.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
-        navigationItem.leftBarButtonItem = btnMenu
-    }
-    
-    @IBAction func menuButtonPressed(_ sender: Any) {
-        slideMenu.showSlideMenu()
-    }
-    
-    //MARK: - Search Button
-    
-    func btnSearch() {
-        let btnSearch = UIBarButtonItem(image: UIImage(named: "ic_search_white"), style: .plain, target: self, action: #selector(btnSearchPressed(_:)))
-        btnSearch.tintColor = UIColor.rpb(red: 0, green: 186, blue: 185)
-        navigationItem.rightBarButtonItem = btnSearch
-    }
-        
-    @IBAction func btnSearchPressed(_ sender: Any) {
-        let vcSearch = storyboard?.instantiateViewController(withIdentifier: "SearchMovieVC") as! SearchMovieVC
-        navigationController?.pushViewController(vcSearch, animated: true)
+    func setupData() {
+        if self.swicthSegment.selectedSegmentIndex == 0 {
+            getMovie(path: pathPopular)
+            self.tbvMovie.reloadData()
+        }
     }
     
     //MARK: -  Segment Action
     
     @IBAction func segmentSwitchChange(_ sender: Any) {
-        if self.swicthSegment.selectedSegmentIndex == 0 {
-            self.getMovieList()
-            self.tbvMovie.reloadData()
-        }
-        if self.swicthSegment.selectedSegmentIndex == 1 {
-            self.getTopRatedMovie()
-            self.tbvMovie.reloadData()
-        } else {
-            self.getNowPlayingMovie()
-            self.tbvMovie.reloadData()
+        switch self.swicthSegment.selectedSegmentIndex {
+            case 0:
+                getMovie(path: pathPopular)
+            case 1:
+                getMovie(path: pathNow)
+            case 2:
+                getMovie(path: pathTopRated)
+            default:
+                break
         }
     }
     
     //MARK: - Get Movie List
     
-    func getMovieList() {
+    func getMovie(path: String) {
+        var array: Array<Movie> = []
         let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
         self.showHUD(view: self.view)
-        APIController.request(manager: .movieList, params: params) { (error, response) in
+        APIController.request(path: path, params: params, manager: .movieList) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -110,55 +90,17 @@ class MovieTapScreenVC: BaseViewController {
                 } else {
                     for movies in results! {
                         let movie = Movie(with: movies as! [String : Any])
-                        self.movieArray.append(movie)
+                        array.append(movie)
                     }
-                    self.tbvMovie.reloadData()
-                }
-            }
-        }
-    }
-    
-    func getNowPlayingMovie() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        self.showHUD(view: self.view)
-        APIController.request(manager: .nowPlaying, params: params) { (error, response) in
-            self.hideHUD(view: self.view)
-            if error != nil {
-                self.showAlertTitle("Error", error!, self)
-            } else {
-                let results = response!["results"].arrayObject
-                if results == nil {
-                    if let id = response?["status_message"].stringValue {
-                        self.showAlertTitle("Error", "Status_message: " + id, self)
-                    }
-                } else {
-                    for movies in results! {
-                        let movie = Movie(with: movies as! [String : Any])
-                        self.nowPlayingMovieArray.append(movie)
-                    }
-                    self.tbvMovie.reloadData()
-                }
-            }
-        }
-    }
-    
-    func getTopRatedMovie() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        self.showHUD(view: self.view)
-        APIController.request(manager: .topRated, params: params) { (error, response) in
-            self.hideHUD(view: self.view)
-            if error != nil {
-                self.showAlertTitle("Error", error!, self)
-            } else {
-                let results = response!["results"].arrayObject
-                if results == nil {
-                    if let id = response?["status_message"].stringValue {
-                        self.showAlertTitle("Error", "Status_message: " + id, self)
-                    }
-                } else {
-                    for movies in results! {
-                        let movie = Movie(with: movies as! [String : Any])
-                        self.topRatedMovieArray.append(movie)
+                    switch self.swicthSegment.selectedSegmentIndex {
+                        case 0:
+                            self.popularMovieArray = array
+                        case 1:
+                            self.nowPlayingMovieArray = array
+                        case 2:
+                            self.topRatedMovieArray = array
+                        default:
+                            break
                     }
                     self.tbvMovie.reloadData()
                 }
@@ -179,7 +121,6 @@ class MovieTapScreenVC: BaseViewController {
                     let genre = Movie.Genres(with: genres as! [String : Any])
                     self.genre.updateValue(genre.name, forKey: String(genre.id))
                 }
-                print(self.genre)
             }
         }
     }
@@ -187,11 +128,13 @@ class MovieTapScreenVC: BaseViewController {
     func setupGenre(with genresId: Array<Int>!) -> String {
         var genresString = ""
         var str = ""
-        for id in genresId! {
-            let idString = String(id)
-            str.append("\(self.genre["\(idString)"] as! String), ")
+        if !self.genre.isEmpty {
+            for id in genresId! {
+                let idString = String(id)
+                str.append("\(self.genre["\(idString)"] as! String), ")
+            }
+            genresString = String(str.dropLast(2))
         }
-        genresString = String(str.dropLast(2))
         return genresString
     }
 }
@@ -200,7 +143,7 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.swicthSegment.selectedSegmentIndex {
         case 0:
-            return self.movieArray.count
+            return self.popularMovieArray.count
         case 1:
             return self.nowPlayingMovieArray.count
         case 2:
@@ -212,10 +155,9 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
-        if self.movieArray.count > 0 {
-            switch self.swicthSegment.selectedSegmentIndex {
+        switch self.swicthSegment.selectedSegmentIndex {
             case 0:
-                let movie = self.movieArray[indexPath.row]
+                let movie = self.popularMovieArray[indexPath.row]
                 cell.selectionStyle = .default
                 cell.lblRenges.text = self.setupGenre(with: movie.genre_ids as! Array<Int>)
                 cell.bindData(movie: movie)
@@ -234,7 +176,6 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             default:
                 break
-            }
         }
         return cell
     }
@@ -248,7 +189,7 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch self.swicthSegment.selectedSegmentIndex {
         case 0:
-            goToDetailScreen(movieArray: self.movieArray, row: indexPath.row)
+            goToDetailScreen(movieArray: self.popularMovieArray, row: indexPath.row)
         case 1:
             goToDetailScreen(movieArray: self.nowPlayingMovieArray, row: indexPath.row)
         case 2:
@@ -256,25 +197,6 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
         default:
             break
         }
-    }
-    
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
-        setCellColor(UIColor.rpb(red: 200, green: 200, blue: 200), for: cell)
-    }
-    
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTapScreenTBVC", for: indexPath) as! MovieTapScreenTBVC
-        setCellColor(.clear, for: cell)
-    }
-    
-    func setCellColor(_ color: UIColor, for cell: UITableViewCell) {
-        cell.contentView.backgroundColor = color
-        cell.backgroundColor = color
     }
     
 }

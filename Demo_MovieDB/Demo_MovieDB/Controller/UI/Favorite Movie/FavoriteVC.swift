@@ -81,11 +81,13 @@ class FavoriteVC: BaseViewController {
     func setupGenre(with genresId: Array<Int>!) -> String {
         var genresString = ""
         var str = ""
-        for id in genresId! {
-            let idString = String(id)
-            str.append("\(self.genre["\(idString)"] as! String), ")
+        if !self.genre.isEmpty {
+            for id in genresId! {
+                let idString = String(id)
+                str.append("\(self.genre["\(idString)"] as! String), ")
+            }
+            genresString = String(str.dropLast(2))
         }
-        genresString = String(str.dropLast(2))
         return genresString
     }
 }

@@ -22,30 +22,35 @@ class DetailMovieVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if movie == nil {
-            
-        } else {
-            print(self.movie.id!)
-            getMovieWith(id: movie.id!)
-            
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tbvDetail.reloadData()
+        navigationItem.title = "DETAIL"
     }
     
     override func setupUserInterFace() {
         showBackButton()
         self.isMarkOfFavorite = true
-        getFavoriteMovie(idMovie: movie.id!)
+        if movie != nil {
+            getMovieWith(id: movie.id!)
+            getFavoriteMovie(idMovie: movie.id!)
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage), name: NSNotification.Name("Remove Out Favorite"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage), name: NSNotification.Name("Mark Of Favorite"), object: nil)
+    }
+    
+    @objc func acceptMessage(_ notification: Notification) {
+        if notification.name.rawValue == "Remove Out Favorite" {
+            removeFavorite(with: movie.id, isMark: self.isMarkOfFavorite)
+            self.isMarkOfFavorite = true
+        } else {
+            markAsFaviriteMovie(with: movie.id, isMark: self.isMarkOfFavorite)
+            self.isMarkOfFavorite = false
+        }
+        tbvDetail.reloadData()
     }
     
     func setupDetailTableView() {
         tbvDetail.dataSource = self
         tbvDetail.delegate = self
+        tbvDetail.separatorStyle = .none
         tbvDetail.register(UINib(nibName: "FirstCell", bundle: nil), forCellReuseIdentifier: "FirstCell")
         tbvDetail.register(UINib(nibName: "SecondCell", bundle: nil), forCellReuseIdentifier: "SecondCell")
         tbvDetail.register(UINib(nibName: "ThirdCell", bundle: nil), forCellReuseIdentifier: "ThirdCell")
@@ -59,23 +64,13 @@ class DetailMovieVC: BaseViewController {
         }
         genresString = String(genre.dropLast(2))
     }
-    
-    func setupbtnMarkOfFavorite(movie: Movie, isMark: Bool) {
-        if isMark == false {
-            removeFavorite(with: movie.id, isMark: isMark)
-            isMarkOfFavorite = true
-        } else {
-            markAsFaviriteMovie(with: movie.id, isMark: isMark)
-            isMarkOfFavorite = false
-        }
-    }
 }
 
 extension DetailMovieVC {
     
     func getMovieWith(id : Int) {
         let path = "movie/\(id)"
-        let params: Parameters = [APIKeyword.apiKey : "ee8cf966d22254270f6faa1948ecf3fc"]
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
         self.showHUD(view: self.view)
         APIController.request(path: path, params: params, manager: .movieDetail) { (error, response) in
             self.hideHUD(view: self.view)
@@ -97,7 +92,9 @@ extension DetailMovieVC {
         let accountId = UserDefaults.standard.value(forKey: "UserId")!
         let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
         let path = "account/\(accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
+        self.showHUD(view: self.view)
         APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
+            self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
@@ -111,7 +108,6 @@ extension DetailMovieVC {
         let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
         let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
                                   APIKeyword.Account.sessionId: sessionId]
-        
         let path = "account/\(id)/favorite/movies"
         self.showHUD(view: self.view)
         APIController.request(path: path, params: params, manager: .getFavoriteMovie) { (error, response) in
@@ -126,6 +122,9 @@ extension DetailMovieVC {
                         self.isMarkOfFavorite = false
                     }
                 }
+                if self.isMarkOfFavorite == false {
+                    NotificationCenter.default.post(name: NSNotification.Name("isMark"), object: nil)
+                }
                 self.tbvDetail.reloadData()
             }
         }
@@ -136,8 +135,9 @@ extension DetailMovieVC {
         let accountId = UserDefaults.standard.value(forKey: "UserId")!
         let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
         let path = "account/\(accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
-        
+        self.showHUD(view: self.view)
         APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
+            self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
@@ -145,6 +145,16 @@ extension DetailMovieVC {
             }
         }
     }
+    
+    func formatter(money: Double) -> String{
+        let number = NSDecimalNumber(decimal: Decimal(money))
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        let result = numberFormatter.string(from: number)
+        return result!
+    }
+    
 }
 
 extension DetailMovieVC: UITableViewDataSource, UITableViewDelegate {
@@ -162,42 +172,35 @@ extension DetailMovieVC: UITableViewDataSource, UITableViewDelegate {
             let movie = self.movieArray[indexPath.row]
             if indexPath.row == 0 && indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FirstCell", for: indexPath) as! FirstCell
-                cell.imgProfilePath.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(movie.backdrop_path!)"), completed: nil)
-                cell.lblRated.text = "\(String(movie.vote_average))/10"
-                cell.lblTitle.text = movie.title
                 cell.lblGenres.text = genresString
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-                cell.removeOutFavorite(movie: movie, isMarkOfFavorite: self.isMarkOfFavorite)
+                cell.bindData(movie: movie)
                 return cell
             }
             if indexPath.row == 0 && indexPath.section == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SecondCell", for: indexPath) as! SecondCell
-                cell.lblOverview.text = movie.overview
+                cell.bindData(movie: movie)
                 return cell
             }
             if indexPath.row == 0 && indexPath.section == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ThirdCell", for: indexPath) as! ThirdCell
                 cell.lblTitleCell.text = "RUNTIME"
-                cell.lblInfoCell.text = String(movie.runtime)
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+                cell.lblInfoCell.text = "\(String(movie.runtime))m"
                 return cell
             }
             if indexPath.row == 0 && indexPath.section == 3 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ThirdCell", for: indexPath) as! ThirdCell
                 cell.lblTitleCell.text = "REVENUE"
-                cell.lblInfoCell.text = String(movie.revenue)
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+                cell.lblInfoCell.text = self.formatter(money: movie.revenue)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ThirdCell", for: indexPath) as! ThirdCell
                 cell.lblTitleCell.text = "BUDGET"
-                cell.lblInfoCell.text = String(movie.budget)
+                cell.lblInfoCell.text = self.formatter(money: movie.budget)
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
                 return cell
             }
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cellid", for: indexPath)
-            
             return cell
         }
     }
