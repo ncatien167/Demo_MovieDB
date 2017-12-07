@@ -13,6 +13,7 @@ import SwiftyJSON
 class FavoriteVC: BaseViewController {
 
     @IBOutlet weak var tbvMovie: UITableView!
+    
     var movieArray: [Movie] = []
     var genre: Dictionary <String, Any> = [:]
     
@@ -23,13 +24,13 @@ class FavoriteVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        movieArray.removeAll()
+        movieArray = []
         getFavoriteMovie()
-        self.tbvMovie.reloadData()
-        getAllGenres()
     }
     
     override func setupUserInterFace() {
+        getAllGenres()
+        showMenuButton()
         tbvMovie.rowHeight = 181
         tbvMovie.estimatedRowHeight = 181
         tbvMovie.delegate = self
@@ -38,12 +39,8 @@ class FavoriteVC: BaseViewController {
     }
     
     func getFavoriteMovie() {
-        let id = UserDefaults.standard.value(forKey: "UserId")!
-        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.sessionId: sessionId]
-        let path = "account/\(id)/favorite/movies"
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: params, manager: .getFavoriteMovie) { (error, response) in
+        APIController.request(manager: .getFavoriteMovie, params: Parameter.paramFavorite, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -55,14 +52,13 @@ class FavoriteVC: BaseViewController {
                 }
                 self.tbvMovie.reloadData()
             }
-        }
+        })
     }
     
     //MARK: - Get Genres
     
     func getAllGenres() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        APIController.request(manager: .getGenres, params: params) { (error, response) in
+        APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {

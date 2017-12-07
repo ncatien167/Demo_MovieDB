@@ -10,5 +10,6 @@ target 'Demo_MovieDB' do
   pod 'IQKeyboardManagerSwift'
   pod 'MBProgressHUD'
   pod 'SDWebImage'
+  pod 'youtube-ios-player-helper'
 
 end

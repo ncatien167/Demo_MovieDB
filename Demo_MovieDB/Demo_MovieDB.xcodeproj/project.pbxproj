@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1809A8081FD92FA800D3A67E /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1809A8071FD92FA800D3A67E /* MenuCell.swift */; };
 		180C98D61FD64C540029599F /* FirstCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180C98D41FD64C540029599F /* FirstCell.swift */; };
 		180C98D71FD64C540029599F /* FirstCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180C98D51FD64C540029599F /* FirstCell.xib */; };
 		180C98DE1FD64C9A0029599F /* SecondCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180C98DC1FD64C9A0029599F /* SecondCell.swift */; };
@@ -30,6 +31,7 @@
 		18828E5D1FCF935600A08E47 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18828E5C1FCF935600A08E47 /* BaseViewController.swift */; };
 		18828E611FCF93A100A08E47 /* Movie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18828E601FCF93A100A08E47 /* Movie.storyboard */; };
 		18828E631FCF993C00A08E47 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18828E621FCF993C00A08E47 /* Login.storyboard */; };
+		18890CF61FD8E5B900A5877E /* PlayVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18890CF51FD8E5B900A5877E /* PlayVideoVC.swift */; };
 		189FCBDC1FCFAB3000A27637 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189FCBDB1FCFAB2D00A27637 /* Extentions.swift */; };
 		189FCBE21FCFAE8200A27637 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189FCBDE1FCFAE7F00A27637 /* Logger.swift */; };
 		189FCBE31FCFAE8400A27637 /* APIKeyswords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189FCBDF1FCFAE7F00A27637 /* APIKeyswords.swift */; };
@@ -41,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1809A8071FD92FA800D3A67E /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		180C98D41FD64C540029599F /* FirstCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCell.swift; sourceTree = "<group>"; };
 		180C98D51FD64C540029599F /* FirstCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstCell.xib; sourceTree = "<group>"; };
 		180C98DC1FD64C9A0029599F /* SecondCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondCell.swift; sourceTree = "<group>"; };
@@ -66,6 +69,7 @@
 		18828E5C1FCF935600A08E47 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		18828E601FCF93A100A08E47 /* Movie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Movie.storyboard; sourceTree = "<group>"; };
 		18828E621FCF993C00A08E47 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		18890CF51FD8E5B900A5877E /* PlayVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVideoVC.swift; sourceTree = "<group>"; };
 		189FCBDB1FCFAB2D00A27637 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		189FCBDE1FCFAE7F00A27637 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		189FCBDF1FCFAE7F00A27637 /* APIKeyswords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyswords.swift; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 				1871F6D91FD78A4B00899807 /* Detail Movie */,
 				1871F6DB1FD78A4B00899807 /* Favorite Movie */,
 				1871F6E11FD78A4B00899807 /* People */,
+				18890CF41FD8E5A100A5877E /* Play Video */,
 				18B559611FD505CD001A2A9D /* Slide Menu */,
 				1825BADD1FCFD9BD0040A97C /* Views */,
 			);
@@ -293,6 +298,14 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
+		18890CF41FD8E5A100A5877E /* Play Video */ = {
+			isa = PBXGroup;
+			children = (
+				18890CF51FD8E5B900A5877E /* PlayVideoVC.swift */,
+			);
+			path = "Play Video";
+			sourceTree = "<group>";
+		};
 		189FCBDA1FCFAB2D00A27637 /* Extentions */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				18B559641FD508BD001A2A9D /* SlideMenu.swift */,
+				1809A8071FD92FA800D3A67E /* MenuCell.swift */,
 			);
 			path = "Slide Menu";
 			sourceTree = "<group>";
@@ -424,6 +438,7 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -432,6 +447,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -488,6 +504,7 @@
 				1871F6E71FD78A5600899807 /* MovieTapScreenVC.swift in Sources */,
 				18B559651FD508BD001A2A9D /* SlideMenu.swift in Sources */,
 				180C98D61FD64C540029599F /* FirstCell.swift in Sources */,
+				18890CF61FD8E5B900A5877E /* PlayVideoVC.swift in Sources */,
 				18828E5A1FCF933700A08E47 /* AppDelegate.swift in Sources */,
 				189FCBE21FCFAE8200A27637 /* Logger.swift in Sources */,
 				189FCBE71FCFBD1200A27637 /* Movie.swift in Sources */,
@@ -498,6 +515,7 @@
 				1871F6E51FD78A5000899807 /* DetailMovieVC.swift in Sources */,
 				1871F6E91FD78A5C00899807 /* PeopleVC.swift in Sources */,
 				18828E5D1FCF935600A08E47 /* BaseViewController.swift in Sources */,
+				1809A8081FD92FA800D3A67E /* MenuCell.swift in Sources */,
 				180C98E21FD64CA60029599F /* ThirdCell.swift in Sources */,
 				1871F6E61FD78A5300899807 /* FavoriteVC.swift in Sources */,
 				189FCBE51FCFAE8A00A27637 /* APIController.swift in Sources */,

@@ -20,6 +20,7 @@ enum APIManager {
     case getFavoriteMovie
     case getPeople
     case getGenres
+    case getVideos
 }
 
 extension APIManager {
@@ -36,7 +37,7 @@ extension APIManager {
         case .searchMovie:
             path = "search/movie"
         case .addFavoriteMovie:
-            path = ""
+            path = "account/\(Parameter.accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(Parameter.sessionId)"
         case .movieDetail:
             path = ""
         case .getToken:
@@ -48,11 +49,13 @@ extension APIManager {
         case .account:
             path = "account"
         case .getFavoriteMovie:
-            path = ""
+            path = "account/\(Parameter.accountId)/favorite/movies"
         case .getPeople:
             path = "person/popular"
         case .getGenres:
             path = "genre/movie/list"
+        case .getVideos:
+            path = ""
         }
         return baseURL + path
     }
@@ -84,6 +87,8 @@ extension APIManager {
             return .get
         case .getGenres:
             return .get
+        case .getVideos:
+            return .get
         }
     }
         
@@ -113,6 +118,8 @@ extension APIManager {
         case .getPeople:
             return URLEncoding.default
         case .getGenres:
+            return URLEncoding.default
+        case .getVideos:
             return URLEncoding.default
         }
         
@@ -144,6 +151,8 @@ extension APIManager {
         case .getPeople:
             return [:]
         case .getGenres:
+            return [:]
+        case .getVideos:
             return [:]
         }
     }

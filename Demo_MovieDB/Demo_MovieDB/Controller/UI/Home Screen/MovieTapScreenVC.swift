@@ -16,10 +16,11 @@ enum segment: Int {
     case TopRated = 2
 }
 
-class MovieTapScreenVC: BaseViewController {
+class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
 
     @IBOutlet weak var swicthSegment: UISegmentedControl!
     @IBOutlet weak var tbvMovie: UITableView!
+    
     var popularMovieArray: Array<Movie> = []
     var topRatedMovieArray: Array<Movie> = []
     var nowPlayingMovieArray: Array<Movie> = []
@@ -42,18 +43,16 @@ class MovieTapScreenVC: BaseViewController {
         tbvMovie.estimatedRowHeight = 181
         btnSearch()
         showMenuButton()
-        setupData()
         getAllGenres()
+        getMovie(path: pathPopular)
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
+        tabBarController?.delegate = self
         tbvMovie.contentInset = UIEdgeInsetsMake(6, 0, 7, 0)
     }
     
-    func setupData() {
-        if self.swicthSegment.selectedSegmentIndex == 0 {
-            getMovie(path: pathPopular)
-            self.tbvMovie.reloadData()
-        }
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
     }
     
     //MARK: -  Segment Action
@@ -75,35 +74,28 @@ class MovieTapScreenVC: BaseViewController {
     
     func getMovie(path: String) {
         var array: Array<Movie> = []
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: params, manager: .movieList) { (error, response) in
+        APIController.request(path: path, params: Parameter.paramApiKey, manager: .movieList) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response!["results"].arrayObject
-                if results == nil {
-                    if let id = response?["status_message"].stringValue {
-                        self.showAlertTitle("Error", "Status_message: " + id, self)
-                    }
-                } else {
-                    for movies in results! {
-                        let movie = Movie(with: movies as! [String : Any])
-                        array.append(movie)
-                    }
-                    switch self.swicthSegment.selectedSegmentIndex {
-                        case 0:
-                            self.popularMovieArray = array
-                        case 1:
-                            self.nowPlayingMovieArray = array
-                        case 2:
-                            self.topRatedMovieArray = array
-                        default:
-                            break
-                    }
-                    self.tbvMovie.reloadData()
+                for movies in results! {
+                    let movie = Movie(with: movies as! [String : Any])
+                    array.append(movie)
                 }
+                switch self.swicthSegment.selectedSegmentIndex {
+                    case 0:
+                        self.popularMovieArray = array
+                    case 1:
+                        self.nowPlayingMovieArray = array
+                    case 2:
+                        self.topRatedMovieArray = array
+                    default:
+                        break
+                }
+                self.tbvMovie.reloadData()
             }
         }
     }
@@ -111,8 +103,7 @@ class MovieTapScreenVC: BaseViewController {
     //MARK: - Get Genres
     
     func getAllGenres() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        APIController.request(manager: .getGenres, params: params) { (error, response) in
+        APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
@@ -140,6 +131,7 @@ class MovieTapScreenVC: BaseViewController {
 }
 
 extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.swicthSegment.selectedSegmentIndex {
         case 0:

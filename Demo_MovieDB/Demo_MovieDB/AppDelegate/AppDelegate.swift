@@ -14,12 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
         let User: String = UserDefaults.standard.value(forKey: "Token") as? String ?? ""
+        
         if User.isEmpty {
             setupLoginViewController()
         } else {
             setupHomeViewController()
         }
+        
         return true
     }
     

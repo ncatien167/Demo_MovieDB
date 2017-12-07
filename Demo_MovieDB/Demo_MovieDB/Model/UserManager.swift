@@ -9,6 +9,7 @@
 import UIKit
 
 class UserManager: NSObject {
+    
     var createToken: String!
     var request_token: String!
     var guest_session_id: String!

@@ -19,15 +19,6 @@ class LoginVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let token = UserDefaults.standard.value(forKey: "Token") as? String {
-            print("Token : \(token)")
-        }
-        if let sessionId = UserDefaults.standard.value(forKey: "UserSessionId") as? String {
-            print("UserSessionId : \(sessionId)")
-        }
-        if let id = UserDefaults.standard.value(forKey: "UserId") as? String {
-            print("UserSessionId : \(id)")
-        }
     }
     
     override func setupUserInterFace() {
@@ -71,15 +62,12 @@ extension LoginVC {
     //MARK: - Get Token
     
     func getToken() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        
-        APIController.request(manager: .getToken, params: params) { (error, response) in
+        APIController.request(manager: .getToken, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response?.dictionaryObject
                 self.user = UserManager(with: results!)
-                print(self.user.createToken)
             }
         }
     }
@@ -104,9 +92,9 @@ extension LoginVC {
                             if let id = response?["status_message"].stringValue
                             {
                                 self.showAlertTitle("Error", "Status_message: " + id, self)
+                                self.hideHUD(view: self.view)
                             }
                         } else {
-                            print(UserManager.shared.request_token)
                             self.createSessionId()
                         }
                     }
@@ -125,7 +113,6 @@ extension LoginVC {
             } else {
                 let results = response?.dictionaryObject
                 UserManager.shared.setSessionId(with: results!)
-                print(UserManager.shared.sessionId)
             }
             self.getAccountDetail()
         }
@@ -142,7 +129,6 @@ extension LoginVC {
             } else {
                 let results = response?.dictionaryObject
                 UserManager.shared.setUser(with: results!)
-                print(UserManager.shared.id)
                 self.goToHomeScreen()
             }
         }

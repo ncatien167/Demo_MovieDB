@@ -15,8 +15,8 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
 
     @IBOutlet weak var sbMovie: UISearchBar!
     @IBOutlet weak var tbvMovie: UITableView!
+    
     var movieArray: [Movie] = []
-    var movieFilterArray: [Movie] = []
     var isSearch: Bool = false
     var genre: Dictionary <String, Any> = [:]
     
@@ -26,7 +26,6 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     }
 
     override func setupUserInterFace() {
-        tabBarController?.tabBar.isHidden = false
         getAllGenres()
         showBackButton()
         navigationItem.title = "SEARCH"
@@ -50,13 +49,6 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
         self.tbvMovie.reloadData()
         movieArray = []
         genre = [:]
-    }
-    
-    func getSearchArrayContains(_ text : String) {
-        let predicate : NSPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", text)
-        movieFilterArray = (movieArray as NSArray).filtered(using: predicate) as! [Movie]
-        isSearch = true
-        tbvMovie.reloadData()
     }
     
     func searchMovieWith(_ text: String) {
@@ -84,8 +76,7 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     //MARK: - Get Genres
     
     func getAllGenres() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        APIController.request(manager: .getGenres, params: params) { (error, response) in
+        APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
@@ -94,7 +85,6 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
                     let genre = Movie.Genres(with: genres as! [String : Any])
                     self.genre.updateValue(genre.name, forKey: String(genre.id))
                 }
-                print(self.genre)
             }
         }
     }

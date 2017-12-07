@@ -13,8 +13,8 @@ import SDWebImage
 
 class PeopleVC: BaseViewController {
 
-    
     @IBOutlet weak var cvwResultPeple: UICollectionView!
+    
     var peopleArray: Array<People> = []
     
     override func viewDidLoad() {
@@ -24,27 +24,29 @@ class PeopleVC: BaseViewController {
     
     override func setupUserInterFace() {
         getAllPeople()
+        showMenuButton()
         cvwResultPeple.delegate = self
         cvwResultPeple.dataSource = self
         cvwResultPeple.contentInset = UIEdgeInsetsMake(8, 0, 8, 0)
     }
     
     func getAllPeople() {
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
-        APIController.request(manager: .getPeople, params: params) { (error, response) in
+        self.showHUD(view: self.view)
+        APIController.request(manager: .getPeople, params: Parameter.paramApiKey) { (error, response) in
+            self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
                 let results = response!["results"].arrayObject
                 for peoples in results! {
                     let people = People(with: peoples as! [String : Any])
-                    print(people.name)
                     self.peopleArray.append(people)
                 }
                 self.cvwResultPeple.reloadData()
             }
         }
     }
+    
 }
 
 extension PeopleVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -57,8 +59,7 @@ extension PeopleVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PeopleCVWC", for: indexPath) as! PeopleCVWC
         if self.peopleArray.count > 0 {
             let people = self.peopleArray[indexPath.row]
-            cell.lblNamePeople.text = "   \(people.name!)"
-            cell.imgPeople.sd_setImage(with: URL(string: "\(APIKeyword.imageUrl)\(people.profile_path!)"), completed: nil)
+            cell.bindData(people: people)
         }
         return cell
     }

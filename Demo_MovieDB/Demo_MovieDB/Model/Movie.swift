@@ -70,6 +70,16 @@ class Movie: NSObject {
         }
     }
     
+    struct Video {
+        var key: String!
+        var name: String!
+        
+        init(with response: [String : Any]) {
+            key = response["key"] as? String ?? ""
+            name = response["name"] as? String ?? ""
+        }
+    }
+    
 }
 
 class People: NSObject {

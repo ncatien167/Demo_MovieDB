@@ -8,8 +8,6 @@
 
 import UIKit
 import Alamofire
-import SwiftyJSON
-import SDWebImage
 
 class DetailMovieVC: BaseViewController {
     
@@ -22,30 +20,41 @@ class DetailMovieVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "DETAIL"
+        
     }
     
     override func setupUserInterFace() {
         showBackButton()
+        navigationItem.title = "DETAIL"
         self.isMarkOfFavorite = true
         if movie != nil {
             getMovieWith(id: movie.id!)
             getFavoriteMovie(idMovie: movie.id!)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage), name: NSNotification.Name("Remove Out Favorite"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage), name: NSNotification.Name("Mark Of Favorite"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage),
+                                               name: NSNotification.Name("Mark Of Favorite"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessage),
+                                               name: NSNotification.Name("Play Video"), object: nil)
     }
     
     @objc func acceptMessage(_ notification: Notification) {
-        if notification.name.rawValue == "Remove Out Favorite" {
-            removeFavorite(with: movie.id, isMark: self.isMarkOfFavorite)
-            self.isMarkOfFavorite = true
+        if notification.name.rawValue == "Play Video" {
+            let vcPlayVideo = storyboard?.instantiateViewController(withIdentifier: "PlayVideoVC") as! PlayVideoVC
+            vcPlayVideo.movie = self.movie
+            navigationController?.pushViewController(vcPlayVideo, animated: true)
         } else {
-            markAsFaviriteMovie(with: movie.id, isMark: self.isMarkOfFavorite)
-            self.isMarkOfFavorite = false
+            if self.isMarkOfFavorite == false {
+                markAsFaviriteMovie(with: movie.id, isMark: self.isMarkOfFavorite)
+                self.isMarkOfFavorite = true
+            } else {
+                markAsFaviriteMovie(with: movie.id, isMark: self.isMarkOfFavorite)
+                self.isMarkOfFavorite = false
+            }
+            tbvDetail.reloadData()
         }
-        tbvDetail.reloadData()
     }
+    
+    //MARK: - Set up
     
     func setupDetailTableView() {
         tbvDetail.dataSource = self
@@ -80,9 +89,8 @@ extension DetailMovieVC {
     
     func getMovieWith(id : Int) {
         let path = "movie/\(id)"
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: params, manager: .movieDetail) { (error, response) in
+        APIController.request(path: path, params: Parameter.paramApiKey, manager: .movieDetail) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -99,28 +107,23 @@ extension DetailMovieVC {
     
     func markAsFaviriteMovie(with id: Int?, isMark: Bool) {
         let requestBody = ["media_type": "movie", "media_id": id!, "favorite": isMark] as [String : Any]
-        let accountId = UserDefaults.standard.value(forKey: "UserId")!
-        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
-        let path = "account/\(accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
+        APIController.request(manager: .addFavoriteMovie, params: requestBody, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
             } else {
-                self.showAlertTitle("Confirm", "As movie to favorite is susseccfuly", self)
+                if let results = response?["status_message"].stringValue
+                {
+                    self.showAlertTitle("Confirm" ,"Status_message: " + results, self)
+                }
             }
-        }
+        })
     }
     
     func getFavoriteMovie(idMovie: Int) {
-        let id = UserDefaults.standard.value(forKey: "UserId")!
-        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
-        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key,
-                                  APIKeyword.Account.sessionId: sessionId]
-        let path = "account/\(id)/favorite/movies"
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: params, manager: .getFavoriteMovie) { (error, response) in
+        APIController.request(manager: .getFavoriteMovie, params: Parameter.paramFavorite, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
                 self.showAlertTitle("Error", error!, self)
@@ -137,23 +140,7 @@ extension DetailMovieVC {
                 }
                 self.tbvDetail.reloadData()
             }
-        }
-    }
-    
-    func removeFavorite(with id: Int, isMark: Bool) {
-        let requestBody = ["media_type": "movie", "media_id": id, "favorite": isMark] as [String : Any]
-        let accountId = UserDefaults.standard.value(forKey: "UserId")!
-        let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
-        let path = "account/\(accountId)/favorite?api_key=\(APIKeyword.api_key)&session_id=\(sessionId)"
-        self.showHUD(view: self.view)
-        APIController.request(path: path, params: requestBody, manager: .addFavoriteMovie) { (error, response) in
-            self.hideHUD(view: self.view)
-            if error != nil {
-                self.showAlertTitle("Error", error!, self)
-            } else {
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
+        })
     }
     
 }
@@ -205,6 +192,7 @@ extension DetailMovieVC: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
     }
+    
 }
 
 

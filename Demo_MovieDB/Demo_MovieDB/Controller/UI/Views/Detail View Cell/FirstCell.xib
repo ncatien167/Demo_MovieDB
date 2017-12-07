@@ -62,6 +62,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fon-jK-pwW">
+                                <rect key="frame" x="136" y="82" width="48" height="48"/>
+                                <state key="normal" image="ic_play_circle_outline_white_48pt"/>
+                                <connections>
+                                    <action selector="playTrailerMovie:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="qbb-gA-DWA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -73,10 +80,12 @@
                             <constraint firstItem="rvJ-0Z-ejN" firstAttribute="top" secondItem="rfZ-6H-UTl" secondAttribute="top" id="PJp-gq-5j4"/>
                             <constraint firstItem="CpF-lw-kRh" firstAttribute="leading" secondItem="rfZ-6H-UTl" secondAttribute="leading" constant="14" id="Qu1-c6-9ee"/>
                             <constraint firstItem="rvJ-0Z-ejN" firstAttribute="leading" secondItem="rfZ-6H-UTl" secondAttribute="leading" id="RcW-Fh-jY4"/>
+                            <constraint firstItem="fon-jK-pwW" firstAttribute="top" secondItem="rfZ-6H-UTl" secondAttribute="top" constant="82" id="Rgb-iU-JmT"/>
                             <constraint firstItem="t4q-Hz-3Fa" firstAttribute="leading" secondItem="rfZ-6H-UTl" secondAttribute="leading" id="V5a-0Q-G7Q"/>
                             <constraint firstAttribute="trailing" secondItem="CpF-lw-kRh" secondAttribute="trailing" constant="11" id="c1z-v4-HU9"/>
                             <constraint firstItem="7af-Dd-d3c" firstAttribute="leading" secondItem="rfZ-6H-UTl" secondAttribute="leading" constant="13" id="kC0-2m-nXU"/>
                             <constraint firstAttribute="height" constant="257.5" id="m8E-tI-D8E"/>
+                            <constraint firstItem="fon-jK-pwW" firstAttribute="centerX" secondItem="rfZ-6H-UTl" secondAttribute="centerX" id="mQc-wp-FjK"/>
                             <constraint firstAttribute="trailing" secondItem="7af-Dd-d3c" secondAttribute="trailing" constant="12" id="obe-EM-l6v"/>
                             <constraint firstAttribute="trailing" secondItem="t4q-Hz-3Fa" secondAttribute="trailing" id="qTC-Y0-hP5"/>
                             <constraint firstItem="toX-RQ-5AR" firstAttribute="top" secondItem="rfZ-6H-UTl" secondAttribute="top" constant="14" id="rEP-dE-cYz"/>
@@ -101,4 +110,7 @@
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="ic_play_circle_outline_white_48pt" width="48" height="48"/>
+    </resources>
 </document>

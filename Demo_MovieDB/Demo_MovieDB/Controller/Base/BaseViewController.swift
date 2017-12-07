@@ -13,12 +13,21 @@ import SDWebImage
 import MBProgressHUD
 
 class BaseViewController: UIViewController {
-
-    let slideMenu = SlideMenu()
+    
+    lazy var slideMenu: SlideMenu = {
+        let mb = SlideMenu()
+        mb.baseController = self
+        return mb
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUserInterFace()
+        setupSlideMenu()
+    }
+    
+    deinit {
+        print("[\(type(of: self))] dealloc")
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +38,32 @@ class BaseViewController: UIViewController {
     func setupUserInterFace() {
         
     }
+    
+    func setupSlideMenu() {
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageMenu),
+                                               name: NSNotification.Name("Go People"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageMenu),
+                                               name: NSNotification.Name("Go Favorite"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageMenu),
+                                               name: NSNotification.Name("Go Movie"), object: nil)
+    }
+    
+    @objc func acceptMessageMenu(_ notification: Notification) {
+        if notification.name.rawValue == "Go Movie" {
+            tabBarController?.selectedIndex = 0
+        }
+        if notification.name.rawValue == "Go People" {
+            tabBarController?.selectedIndex = 1
+        }
+        if notification.name.rawValue == "Go Favorite" {
+            tabBarController?.selectedIndex = 2
+        }
+    }
+    
+    func scrollToMenuIndex(menuIndex: Int) {
+        tabBarController?.selectedIndex = menuIndex
+    }
+
     
     func showAlertTitle(_ title: String, _ message: String, _ view: UIViewController) {
         let alert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import  Alamofire
+import Alamofire
 
 class FirstCell: UITableViewCell {
 
@@ -42,16 +42,19 @@ class FirstCell: UITableViewCell {
 
     @IBAction func btnMarkOfFavorite(_ sender: Any) {
         if self.isMarkOfFavorite == false {
-            NotificationCenter.default.post(name: NSNotification.Name("Remove Out Favorite"), object: nil)
             btnFavorite.setTitle("MASK OF FAVORITE", for: .normal)
             btnFavorite.backgroundColor = UIColor.rpb(red: 0, green: 186, blue: 185)
             self.isMarkOfFavorite = true
         } else {
-            NotificationCenter.default.post(name: NSNotification.Name("Mark Of Favorite"), object: nil)
             btnFavorite.setTitle("REMOVE OUT FAVORITE", for: .normal)
             btnFavorite.backgroundColor = .gray
             self.isMarkOfFavorite = false
         }
+        NotificationCenter.default.post(name: NSNotification.Name("Mark Of Favorite"), object: nil)
+    }
+    
+    @IBAction func playTrailerMovie(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name("Play Video"), object: nil)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
