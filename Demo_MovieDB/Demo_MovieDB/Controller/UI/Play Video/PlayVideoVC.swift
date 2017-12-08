@@ -40,14 +40,18 @@ class PlayVideoVC: BaseViewController, YTPlayerViewDelegate {
         let path = "movie/\(id)/videos"
         APIController.request(path: path, params: Parameter.paramApiKey, manager: .getVideos) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 let results = response!["results"].arrayObject
-                for videos in results! {
-                    let video = Movie.Video.init(with: videos as! [String : Any])
-                    self.videoArray.append(video)
+                if (results?.isEmpty)! {
+                    self.showAlertTitle("ConFirm", "No video to watch.", self, nil)
+                } else {
+                    for videos in results! {
+                        let video = Movie.Video.init(with: videos as! [String : Any])
+                        self.videoArray.append(video)
+                    }
+                    self.loadYoutube(video: self.videoArray[0])
                 }
-                self.loadYoutube(video: self.videoArray[0])
             }
         }
     }

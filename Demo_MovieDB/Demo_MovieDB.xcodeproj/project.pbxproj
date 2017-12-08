@@ -242,8 +242,8 @@
 		18828E531FCF92FE00A08E47 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				18828E541FCF92FE00A08E47 /* UI */,
 				18828E551FCF92FE00A08E47 /* Base */,
+				18828E541FCF92FE00A08E47 /* UI */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -434,6 +434,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Demo_MovieDB/Pods-Demo_MovieDB-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/ESPullToRefresh/ESPullToRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -443,6 +444,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ESPullToRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",

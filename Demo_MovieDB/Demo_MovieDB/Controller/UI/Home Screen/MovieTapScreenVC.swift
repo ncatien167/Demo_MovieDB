@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SDWebImage
+import ESPullToRefresh
 
 enum segment: Int {
     case Popular = 0
@@ -28,7 +29,7 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
     let pathPopular = "movie/popular"
     let pathNow = "movie/now_playing"
     let pathTopRated = "movie/top_rated"
-    
+    var page = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "MOVIES"
@@ -39,20 +40,21 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
     }
     
     override func setupUserInterFace() {
+        print(UserDefaults.standard.value(forKey: Token) as? String ?? "")
+        print(UserDefaults.standard.value(forKey: AccountId) as? Int ?? -1)
+        print(UserDefaults.standard.value(forKey: UserName) as? String ?? "")
+        print(UserDefaults.standard.value(forKey: UserSessionId) as? String ?? "")
         tbvMovie.rowHeight = 181
         tbvMovie.estimatedRowHeight = 181
         btnSearch()
         showMenuButton()
         getAllGenres()
+        refreshData()
         getMovie(path: pathPopular)
         tbvMovie.delegate = self
         tbvMovie.dataSource = self
         tabBarController?.delegate = self
         tbvMovie.contentInset = UIEdgeInsetsMake(6, 0, 7, 0)
-    }
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
     }
     
     //MARK: -  Segment Action
@@ -73,27 +75,29 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
     //MARK: - Get Movie List
     
     func getMovie(path: String) {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, "page" : page]
         var array: Array<Movie> = []
         self.showHUD(view: self.view)
-        APIController.request(path: path, params: Parameter.paramApiKey, manager: .movieList) { (error, response) in
+        APIController.request(path: path, params: params, manager: .movieList) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response!["results"].arrayObject
-                for movies in results! {
-                    let movie = Movie(with: movies as! [String : Any])
+                let results = response!["results"]
+                print(results)
+                for movies in results {
+                    let movie = Movie(with: movies.1)
                     array.append(movie)
                 }
                 switch self.swicthSegment.selectedSegmentIndex {
-                    case 0:
-                        self.popularMovieArray = array
-                    case 1:
-                        self.nowPlayingMovieArray = array
-                    case 2:
-                        self.topRatedMovieArray = array
-                    default:
-                        break
+                case 0:
+                    self.popularMovieArray = self.popularMovieArray + array
+                case 1:
+                    self.nowPlayingMovieArray = self.nowPlayingMovieArray + array
+                case 2:
+                    self.topRatedMovieArray = self.topRatedMovieArray + array
+                default:
+                    break
                 }
                 self.tbvMovie.reloadData()
             }
@@ -105,7 +109,7 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
     func getAllGenres() {
         APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 let results = response!["genres"].arrayObject
                 for genres in results! {
@@ -128,6 +132,46 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
         }
         return genresString
     }
+    
+    //MARK: - Load more and refresh data
+    
+    func refreshData() {
+        self.tbvMovie.es.addPullToRefresh {
+            self.page = 1
+            switch self.swicthSegment.selectedSegmentIndex {
+            case 0:
+                self.popularMovieArray = []
+                self.getMovie(path: self.pathPopular)
+            case 1:
+                self.nowPlayingMovieArray = []
+                self.getMovie(path: self.pathNow)
+            case 2:
+                self.topRatedMovieArray = []
+                self.getMovie(path: self.pathTopRated)
+            default:
+                break
+            }
+            self.tbvMovie.es.stopPullToRefresh(ignoreDate: true)
+        }
+    }
+    
+    func loadMoreData() {
+        self.page += 1
+        self.tbvMovie.es.addInfiniteScrolling {
+            switch self.swicthSegment.selectedSegmentIndex {
+            case 0:
+                self.getMovie(path: self.pathPopular)
+            case 1:
+                self.getMovie(path: self.pathNow)
+            case 2:
+                self.getMovie(path: self.pathTopRated)
+            default:
+                break
+            }
+            self.tbvMovie.es.noticeNoMoreData()
+        }
+    }
+    
 }
 
 extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
@@ -180,14 +224,33 @@ extension MovieTapScreenVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch self.swicthSegment.selectedSegmentIndex {
-        case 0:
-            goToDetailScreen(movieArray: self.popularMovieArray, row: indexPath.row)
-        case 1:
-            goToDetailScreen(movieArray: self.nowPlayingMovieArray, row: indexPath.row)
-        case 2:
-            goToDetailScreen(movieArray: self.topRatedMovieArray, row: indexPath.row)
-        default:
-            break
+            case 0:
+                goToDetailScreen(movieArray: self.popularMovieArray, row: indexPath.row)
+            case 1:
+                goToDetailScreen(movieArray: self.nowPlayingMovieArray, row: indexPath.row)
+            case 2:
+                goToDetailScreen(movieArray: self.topRatedMovieArray, row: indexPath.row)
+            default:
+                break
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        switch self.swicthSegment.selectedSegmentIndex {
+            case 0:
+                if indexPath.row == self.popularMovieArray.count - 1 {
+                    loadMoreData()
+                }
+            case 1:
+                if indexPath.row == self.nowPlayingMovieArray.count - 1 {
+                    loadMoreData()
+                }
+            case 2:
+                if indexPath.row == self.topRatedMovieArray.count - 1 {
+                    loadMoreData()
+                }
+            default:
+                break
         }
     }
     

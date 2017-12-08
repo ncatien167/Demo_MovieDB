@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import SwiftyJSON
+
+let Token = "Token"
+let AccountId = "UserId"
+let UserName = "UserName"
+let UserSessionId = "UserSessionId"
+
 
 class UserManager: NSObject {
     
@@ -20,35 +27,39 @@ class UserManager: NSObject {
     static let shared = UserManager()
     private override init(){}
     
-    init(with response: [String : Any]) {
-        createToken      = response["request_token"] as? String ?? ""
-        guest_session_id = response["guest_session_id"] as? String ?? ""
+    init(with response: JSON) {
+        createToken      = response["request_token"].stringValue
+        guest_session_id = response["guest_session_id"].stringValue
     }
     
-    func setToken(with response: [String : Any]) {
-        request_token = response["request_token"] as? String ?? ""
+    func setToken(with response: JSON) {
+        request_token = response["request_token"].stringValue
+        
         if request_token != nil {
-            UserDefaults.standard.set(request_token, forKey: "Token")
+            UserDefaults.standard.set(request_token, forKey: Token)
         }
         UserDefaults.standard.synchronize()
     }
     
-    func setUser(with response: [String : Any]) {
-        id = response["id"] as? Int ?? -1
+    func setUser(with response: JSON) {
+        id = response["id"].intValue
+        username = response["username"].stringValue
+        
         if id != nil {
-            UserDefaults.standard.set(id, forKey: "UserId")
+            UserDefaults.standard.set(id, forKey: AccountId)
         }
-        username = response["username"] as? String ?? ""
+        
         if username != nil {
-            UserDefaults.standard.set(username, forKey: "UserName")
+            UserDefaults.standard.set(username, forKey: UserName)
         }
         UserDefaults.standard.synchronize()
     }
     
-    func setSessionId(with response: [String : Any]) {
-        sessionId = response["session_id"] as? String ?? ""
+    func setSessionId(with response: JSON) {
+        sessionId = response["session_id"].stringValue
+        
         if sessionId != nil {
-            UserDefaults.standard.set(sessionId, forKey: "UserSessionId")
+            UserDefaults.standard.set(sessionId, forKey: UserSessionId)
         }
         UserDefaults.standard.synchronize()
     }

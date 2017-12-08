@@ -34,14 +34,12 @@ struct APIKeyword {
 }
 
 struct Parameter {
-    
     static let id        = UserDefaults.standard.value(forKey: "UserId")!
     static let sessionId = UserDefaults.standard.value(forKey: "UserSessionId")!
     static let accountId = UserDefaults.standard.value(forKey: "UserId")!
     
     static let paramApiKey: Parameters = [APIKeyword.apiKey : APIKeyword.api_key]
     static let paramFavorite: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.sessionId: sessionId]
-    
     
 }
 

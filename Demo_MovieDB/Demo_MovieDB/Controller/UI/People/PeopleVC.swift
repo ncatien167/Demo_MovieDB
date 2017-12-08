@@ -35,7 +35,7 @@ class PeopleVC: BaseViewController {
         APIController.request(manager: .getPeople, params: Parameter.paramApiKey) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 let results = response!["results"].arrayObject
                 for peoples in results! {

@@ -14,12 +14,6 @@ import MBProgressHUD
 
 class BaseViewController: UIViewController {
     
-    lazy var slideMenu: SlideMenu = {
-        let mb = SlideMenu()
-        mb.baseController = self
-        return mb
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUserInterFace()
@@ -38,6 +32,14 @@ class BaseViewController: UIViewController {
     func setupUserInterFace() {
         
     }
+    
+    //MARK: - Tab Slide Menu
+    
+    lazy var slideMenu: SlideMenu = {
+        let mb = SlideMenu()
+        mb.baseController = self
+        return mb
+    }()
     
     func setupSlideMenu() {
         NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageMenu),
@@ -64,11 +66,18 @@ class BaseViewController: UIViewController {
         tabBarController?.selectedIndex = menuIndex
     }
 
+    //MARK: - Alert
     
-    func showAlertTitle(_ title: String, _ message: String, _ view: UIViewController) {
+    func showAlertTitle(_ title: String, _ message: String, _ view: UIViewController, _ isMark: Bool?) {
         let alert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: {action in self.popView(isMark: isMark)}))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func popView(isMark: Bool?) {
+        if isMark == false {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     //MARK: - Progress HUD

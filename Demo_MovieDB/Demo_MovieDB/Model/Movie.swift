@@ -25,39 +25,38 @@ class Movie: NSObject {
     var runtime: Int!
     var budget: Double!
     
-    init(with response: [String : Any]) {
-        vote_count          = response["vote_count"] as? Int ?? -1
-        id                  = response["id"] as? Int ?? -1
-        vote_average        = response["vote_average"] as? Double ?? -1
-        title               = response["title"] as? String ?? ""
-        poster_path         = response["poster_path"] as? String ?? ""
-        original_language   = response["original_language"] as? String ?? ""
-        original_title      = response["original_title"] as? String ?? ""
-        genre_ids           = response["genre_ids"] as? Array<Any> ?? []
-        backdrop_path       = response["backdrop_path"] as? String ?? ""
-        overview            = response["overview"] as? String ?? ""
-        release_date        = response["release_date"] as? String ?? ""
-        revenue             = response["revenue"] as? Double ?? -1
-        runtime             = response["runtime"] as? Int ?? -1
-        budget              = response["budget"] as? Double ?? -1
+    init(with response: JSON) {
+        id = JSON(response["id"]).intValue
+        title = JSON(response["title"]).stringValue
+        runtime = JSON(response["runtime"]).intValue
+        budget = JSON(response["budget"]).doubleValue
+        revenue = JSON(response["revenue"]).doubleValue
+        overview = JSON(response["overview"]).stringValue
+        vote_count = JSON(response["vote_count"]).intValue
+        genre_ids = JSON(response["genre_ids"]).arrayObject
+        poster_path = JSON(response["poster_path"]).stringValue
+        release_date = JSON(response["release_date"]).stringValue
+        vote_average = JSON(response["vote_average"]).doubleValue
+        backdrop_path = JSON(response["backdrop_path"]).stringValue
+        original_title = JSON(response["original_title"]).stringValue
+        original_language = JSON(response["original_language"]).stringValue
     }
     
-    init(responseId: Dictionary<String, Any>) {
-        vote_count          = responseId["vote_count"] as? Int ?? -1
-        id                  = responseId["id"] as? Int ?? -1
-        vote_average        = responseId["vote_average"] as? Double ?? -1
-        title               = responseId["title"] as? String ?? ""
-        poster_path         = responseId["poster_path"] as? String ?? ""
-        original_language   = responseId["original_language"] as? String ?? ""
-        original_title      = responseId["original_title"] as? String ?? ""
-        genre_ids           = responseId["genres"] as? Array<Any> ?? []
-        backdrop_path       = responseId["backdrop_path"] as? String ?? ""
-        overview            = responseId["overview"] as? String ?? ""
-        release_date        = responseId["release_date"] as? String ?? ""
-        revenue             = responseId["revenue"] as? Double ?? -1
-        runtime             = responseId["runtime"] as? Int ?? -1
-        budget              = responseId["budget"] as? Double ?? -1
-
+    init(responseId: JSON) {
+        id = JSON(responseId["id"]).intValue
+        title = JSON(responseId["title"]).stringValue
+        runtime = JSON(responseId["runtime"]).intValue
+        budget = JSON(responseId["budget"]).doubleValue
+        revenue = JSON(responseId["revenue"]).doubleValue
+        overview = JSON(responseId["overview"]).stringValue
+        vote_count = JSON(responseId["vote_count"]).intValue
+        genre_ids = JSON(responseId["genres"]).arrayObject
+        poster_path = JSON(responseId["poster_path"]).stringValue
+        release_date = JSON(responseId["release_date"]).stringValue
+        vote_average = JSON(responseId["vote_average"]).doubleValue
+        backdrop_path = JSON(responseId["backdrop_path"]).stringValue
+        original_title = JSON(responseId["original_title"]).stringValue
+        original_language = JSON(responseId["original_language"]).stringValue
     }
     
     struct Genres {

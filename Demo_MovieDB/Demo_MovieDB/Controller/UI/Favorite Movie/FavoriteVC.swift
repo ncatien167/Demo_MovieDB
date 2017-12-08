@@ -16,6 +16,7 @@ class FavoriteVC: BaseViewController {
     
     var movieArray: [Movie] = []
     var genre: Dictionary <String, Any> = [:]
+    var page = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,7 @@ class FavoriteVC: BaseViewController {
     override func setupUserInterFace() {
         getAllGenres()
         showMenuButton()
+        refreshData()
         tbvMovie.rowHeight = 181
         tbvMovie.estimatedRowHeight = 181
         tbvMovie.delegate = self
@@ -39,15 +41,16 @@ class FavoriteVC: BaseViewController {
     }
     
     func getFavoriteMovie() {
+        let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.sessionId: Parameter.sessionId, "page" : page]
         self.showHUD(view: self.view)
-        APIController.request(manager: .getFavoriteMovie, params: Parameter.paramFavorite, result: { (error, response) in
+        APIController.request(manager: .getFavoriteMovie, params: params, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response!["results"].arrayObject
-                for movies in results! {
-                    let movie = Movie(with: movies as! [String : Any])
+                let results = response!["results"]
+                for movies in results {
+                    let movie = Movie(with: movies.1)
                     self.movieArray.append(movie)
                 }
                 self.tbvMovie.reloadData()
@@ -60,7 +63,7 @@ class FavoriteVC: BaseViewController {
     func getAllGenres() {
         APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 let results = response!["genres"].arrayObject
                 for genres in results! {
@@ -83,6 +86,25 @@ class FavoriteVC: BaseViewController {
         }
         return genresString
     }
+    
+    //MARK: - Load more and refresh data
+    
+    func refreshData() {
+        self.tbvMovie.es.addPullToRefresh {
+            self.page = 1
+            self.movieArray = []
+            self.getFavoriteMovie()
+            self.tbvMovie.es.stopPullToRefresh(ignoreDate: true)
+        }
+    }
+    
+    func loadMoreData() {
+        self.page += 1
+        self.tbvMovie.es.addInfiniteScrolling {
+            self.tbvMovie.es.noticeNoMoreData()
+        }
+    }
+    
 }
 
 extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
@@ -106,6 +128,12 @@ extension FavoriteVC: UITableViewDataSource, UITableViewDelegate {
         let vcDetailMovie = storyboard?.instantiateViewController(withIdentifier: "DetailMovieVC") as! DetailMovieVC
         vcDetailMovie.movie = self.movieArray[indexPath.row]
         navigationController?.pushViewController(vcDetailMovie, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == self.movieArray.count - 1 {
+            loadMoreData()
+        }
     }
     
 }

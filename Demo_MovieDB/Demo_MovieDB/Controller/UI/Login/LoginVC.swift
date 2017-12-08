@@ -64,10 +64,10 @@ extension LoginVC {
     func getToken() {
         APIController.request(manager: .getToken, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response?.dictionaryObject
-                self.user = UserManager(with: results!)
+                self.user = UserManager(with: response!)
+                print(self.user.createToken)
             }
         }
     }
@@ -75,7 +75,7 @@ extension LoginVC {
     func getTokenWith(username: String!, password: String!) {
         validateTextField(username: username, password: password) { (isValidate, message) in
             if isValidate == false {
-                self.showAlertTitle("Error", message, self)
+                self.showAlertTitle("Error", message, self, nil)
                 return
             } else {
                 let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.username : username!,
@@ -83,15 +83,15 @@ extension LoginVC {
                 self.showHUD(view: self.view)
                 APIController.request(manager: .login, params: params) { (error, response) in
                     if error != nil {
-                        self.showAlertTitle("Error", error!, self)
+                        self.showAlertTitle("Error", error!, self, nil)
                     } else {
-                        let results = response!.dictionaryObject
-                        UserManager.shared.setToken(with: results!)
+                        UserManager.shared.setToken(with: response!)
+                        print(UserManager.shared.request_token!)
                         let token = UserManager.shared.request_token!
                         if token.isEmpty {
                             if let id = response?["status_message"].stringValue
                             {
-                                self.showAlertTitle("Error", "Status_message: " + id, self)
+                                self.showAlertTitle("Error", "Status_message: " + id, self, nil)
                                 self.hideHUD(view: self.view)
                             }
                         } else {
@@ -109,10 +109,10 @@ extension LoginVC {
         let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.token : UserManager.shared.request_token]
         APIController.request(manager: .sessionId, params: params) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response?.dictionaryObject
-                UserManager.shared.setSessionId(with: results!)
+                UserManager.shared.setSessionId(with: response!)
+                print(UserManager.shared.sessionId)
             }
             self.getAccountDetail()
         }
@@ -125,10 +125,9 @@ extension LoginVC {
         APIController.request(manager: .account, params: params) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response?.dictionaryObject
-                UserManager.shared.setUser(with: results!)
+                UserManager.shared.setUser(with: response!)
                 self.goToHomeScreen()
             }
         }

@@ -67,7 +67,7 @@ class DetailMovieVC: BaseViewController {
     
     func setupDataDetail(movie: Movie) {
         var genre = ""
-        for genres in movie.genre_ids {
+        for genres in movie.genre_ids! {
             let genresMovie = Movie.Genres(with: genres as! [String : Any])
             genre.append("\(genresMovie.name!), ")
         }
@@ -93,10 +93,10 @@ extension DetailMovieVC {
         APIController.request(path: path, params: Parameter.paramApiKey, manager: .movieDetail) { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
+                self.navigationController?.popViewController(animated: true)
             } else {
-                let data = response?.dictionaryObject
-                let movie = Movie(responseId: data!)
+                let movie = Movie(responseId: response!)
                 self.movieArray.append(movie)
                 self.setupDataDetail(movie: movie)
             }
@@ -111,11 +111,11 @@ extension DetailMovieVC {
         APIController.request(manager: .addFavoriteMovie, params: requestBody, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 if let results = response?["status_message"].stringValue
                 {
-                    self.showAlertTitle("Confirm" ,"Status_message: " + results, self)
+                    self.showAlertTitle("Confirm" ,"Status_message: " + results, self, isMark)
                 }
             }
         })
@@ -126,11 +126,11 @@ extension DetailMovieVC {
         APIController.request(manager: .getFavoriteMovie, params: Parameter.paramFavorite, result: { (error, response) in
             self.hideHUD(view: self.view)
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
-                let results = response!["results"].arrayObject
-                for data in results! {
-                    let movie = Movie(with: data as! [String : Any])
+                let results = response!["results"]
+                for data in results {
+                    let movie = Movie(with: data.1)
                     if idMovie == movie.id {
                         self.isMarkOfFavorite = false
                     }

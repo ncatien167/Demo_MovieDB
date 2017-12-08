@@ -11,5 +11,6 @@ target 'Demo_MovieDB' do
   pod 'MBProgressHUD'
   pod 'SDWebImage'
   pod 'youtube-ios-player-helper'
+  pod 'ESPullToRefresh'
 
 end

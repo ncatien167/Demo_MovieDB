@@ -19,6 +19,8 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     var movieArray: [Movie] = []
     var isSearch: Bool = false
     var genre: Dictionary <String, Any> = [:]
+    var page = 1
+    var textInput = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +44,13 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard !searchText.isEmpty else {
             movieArray = []
+            self.page = 1
             self.tbvMovie.reloadData()
             return
         }
+        self.page = 1
         searchMovieWith(searchText)
+        textInput = searchText
         self.tbvMovie.reloadData()
         movieArray = []
         genre = [:]
@@ -57,14 +62,14 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
             self.tbvMovie.reloadData()
             return
         } else {
-            let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, "query" : text]
+            let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, "query" : text, "page" : self.page]
             APIController.request(manager: .searchMovie, params: params) { (error, response) in
                 if error != nil {
-                    self.showAlertTitle("Error", error!, self)
+                    self.showAlertTitle("Error", error!, self, nil)
                 } else {
-                    let results = response!["results"].arrayObject
-                    for movies in results! {
-                        let movie = Movie(with: movies as! [String : Any])
+                    let results = response!["results"]
+                    for movies in results {
+                        let movie = Movie(with: movies.1)
                         self.movieArray.append(movie)
                     }
                     self.tbvMovie.reloadData()
@@ -78,7 +83,7 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
     func getAllGenres() {
         APIController.request(manager: .getGenres, params: Parameter.paramApiKey) { (error, response) in
             if error != nil {
-                self.showAlertTitle("Error", error!, self)
+                self.showAlertTitle("Error", error!, self, nil)
             } else {
                 let results = response!["genres"].arrayObject
                 for genres in results! {
@@ -101,6 +106,26 @@ class SearchMovieVC: BaseViewController, UISearchBarDelegate {
         }
         return genresString
     }
+    
+    //MARK: - Load more and refresh data
+    
+    func refreshData(text: String) {
+        self.tbvMovie.es.addPullToRefresh {
+            self.movieArray = []
+            self.searchMovieWith(text)
+            self.tbvMovie.es.stopPullToRefresh(ignoreDate: true)
+            self.page = 1
+        }
+    }
+    
+    func loadMoreData(text: String) {
+        self.page += 1
+        self.tbvMovie.es.addInfiniteScrolling {
+            self.searchMovieWith(text)
+            self.tbvMovie.es.noticeNoMoreData()
+        }
+    }
+    
 }
 
 extension SearchMovieVC: UITableViewDataSource, UITableViewDelegate {
@@ -125,6 +150,12 @@ extension SearchMovieVC: UITableViewDataSource, UITableViewDelegate {
         vcDetailMovie.hidesBottomBarWhenPushed = false
         vcDetailMovie.movie = self.movieArray[indexPath.row]
         navigationController?.pushViewController(vcDetailMovie, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == 20 {
+            loadMoreData(text: self.textInput)
+        }
     }
     
 }
