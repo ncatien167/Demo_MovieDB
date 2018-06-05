@@ -152,6 +152,7 @@ class MovieTapScreenVC: BaseViewController, UITabBarControllerDelegate {
                 break
             }
             self.tbvMovie.es.stopPullToRefresh(ignoreDate: true)
+            self.tbvMovie.reloadData()
         }
     }
     

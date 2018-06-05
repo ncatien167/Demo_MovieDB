@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-Heavy</string>
-            <string>AvenirNext-Medium</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--LoginVC-->
         <scene sceneID="0oo-cE-sm1">
@@ -23,9 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LoginThumb_image" translatesAutoresizingMaskIntoConstraints="NO" id="H5g-ZZ-Cn2">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LoginThumb_image" translatesAutoresizingMaskIntoConstraints="NO" id="H5g-ZZ-Cn2">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MOVIE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pLG-OT-ADQ">
                                 <rect key="frame" x="115.5" y="175" width="143" height="55"/>
@@ -134,8 +127,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="H5g-ZZ-Cn2" firstAttribute="leading" secondItem="Ies-8l-FNg" secondAttribute="leading" id="1XU-S2-DZk"/>
                             <constraint firstItem="LKr-1g-qY8" firstAttribute="top" secondItem="pLG-OT-ADQ" secondAttribute="bottom" constant="46" id="2Yy-JU-8DI"/>
                             <constraint firstItem="Ies-8l-FNg" firstAttribute="trailing" secondItem="EbJ-Ji-fYf" secondAttribute="trailing" constant="37" id="2ap-7X-DNe"/>
+                            <constraint firstItem="H5g-ZZ-Cn2" firstAttribute="trailing" secondItem="Ies-8l-FNg" secondAttribute="trailing" id="47H-w1-b0R"/>
                             <constraint firstItem="EbJ-Ji-fYf" firstAttribute="top" secondItem="ZZ3-L2-a6d" secondAttribute="bottom" constant="58" id="4JG-hR-lX6"/>
                             <constraint firstItem="ob2-pk-D93" firstAttribute="top" secondItem="LKr-1g-qY8" secondAttribute="bottom" constant="22" id="4T6-TS-yma"/>
                             <constraint firstItem="EbJ-Ji-fYf" firstAttribute="top" secondItem="Jmh-ke-y8D" secondAttribute="bottom" constant="32" id="6Cj-Nk-KI3"/>
@@ -147,6 +142,7 @@
                             <constraint firstItem="EJb-iD-WR3" firstAttribute="centerX" secondItem="zGH-G5-vFa" secondAttribute="centerX" id="Fbr-Jg-NNy"/>
                             <constraint firstItem="Jmh-ke-y8D" firstAttribute="top" secondItem="pca-Zc-y8C" secondAttribute="bottom" constant="0.5" id="L2J-d2-KMH"/>
                             <constraint firstItem="pca-Zc-y8C" firstAttribute="centerX" secondItem="zGH-G5-vFa" secondAttribute="centerX" id="Qaf-YJ-IwD"/>
+                            <constraint firstItem="H5g-ZZ-Cn2" firstAttribute="top" secondItem="zGH-G5-vFa" secondAttribute="top" id="SYV-VH-FjA"/>
                             <constraint firstItem="Jmh-ke-y8D" firstAttribute="centerX" secondItem="zGH-G5-vFa" secondAttribute="centerX" id="UlF-vD-F24"/>
                             <constraint firstItem="DiL-PO-rjC" firstAttribute="leading" secondItem="Ies-8l-FNg" secondAttribute="leading" constant="36" id="VIV-AO-AqB"/>
                             <constraint firstItem="ob2-pk-D93" firstAttribute="leading" secondItem="Ies-8l-FNg" secondAttribute="leading" constant="36" id="VeP-44-wZ2"/>
@@ -154,6 +150,7 @@
                             <constraint firstItem="Ies-8l-FNg" firstAttribute="trailing" secondItem="LKr-1g-qY8" secondAttribute="trailing" constant="36" id="dot-PB-exf"/>
                             <constraint firstItem="ZZ3-L2-a6d" firstAttribute="top" secondItem="EJb-iD-WR3" secondAttribute="bottom" id="jbh-uA-IBA"/>
                             <constraint firstItem="Ies-8l-FNg" firstAttribute="bottom" secondItem="DiL-PO-rjC" secondAttribute="bottom" constant="35" id="oeP-Gf-QyC"/>
+                            <constraint firstItem="H5g-ZZ-Cn2" firstAttribute="bottom" secondItem="Ies-8l-FNg" secondAttribute="bottom" id="rEy-fz-Oxh"/>
                             <constraint firstItem="EbJ-Ji-fYf" firstAttribute="leading" secondItem="DiL-PO-rjC" secondAttribute="trailing" constant="45" id="zQR-qL-0mX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ies-8l-FNg"/>

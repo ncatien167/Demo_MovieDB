@@ -79,7 +79,7 @@ extension LoginVC {
                 return
             } else {
                 let params: Parameters = [APIKeyword.apiKey : APIKeyword.api_key, APIKeyword.Account.username : username!,
-                                          APIKeyword.Account.password : password!, APIKeyword.Account.token : user.createToken]
+                                          APIKeyword.Account.password : password!, APIKeyword.Account.token : user.createToken!]
                 self.showHUD(view: self.view)
                 APIController.request(manager: .login, params: params) { (error, response) in
                     if error != nil {
